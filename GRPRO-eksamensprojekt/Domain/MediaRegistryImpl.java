@@ -1,21 +1,26 @@
 package Domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Data.*;
 
 public class MediaRegistryImpl implements MediaRegistry{
+    DataAccess data;
+    protected List<String> film;
+    protected List<String> serier;
+    protected List<String> favorit;
     
     public MediaRegistryImpl(){
-        DataAccess data = new DataAccessImpl();
-        data.load("Test");
-        data.load("Test");
-        
+        data = new DataAccessImpl();
+
     }
-    
+
     public void initialize(){
-        //Loads stuff
-        
+        film = data.load("film.txt");
+        serier = data.load("serier.txt");
+        favorit = data.load("favorit.txt");
+        //Billeder
     }
 
     public void addFavorite(String name){
