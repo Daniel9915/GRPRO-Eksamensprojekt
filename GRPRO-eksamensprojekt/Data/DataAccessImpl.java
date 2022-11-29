@@ -2,7 +2,12 @@ package Data;
 import java.util.List;
 
 public class DataAccessImpl implements DataAccess{
-    public List<String> load(){
+    
+    public DataAccessImpl(){
+        
+    }
+    
+    public List<String> load(String path){
         return null;
     }
 

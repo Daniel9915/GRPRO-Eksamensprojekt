@@ -1,8 +1,21 @@
 package Domain;
+
 import java.util.ArrayList;
 
+import Data.*;
+
 public class MediaRegistryImpl implements MediaRegistry{
+    
+    public MediaRegistryImpl(){
+        DataAccess data = new DataAccessImpl();
+        data.load("Test");
+        data.load("Test");
+        
+    }
+    
     public void initialize(){
+        //Loads stuff
+        
     }
 
     public void addFavorite(String name){

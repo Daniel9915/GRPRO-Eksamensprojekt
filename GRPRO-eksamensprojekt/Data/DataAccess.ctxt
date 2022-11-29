@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=DataAccess
-comment1.params=
-comment1.target=java.util.List\ load()
+comment1.params=path
+comment1.target=java.util.List\ load(java.lang.String)
 comment2.params=
 comment2.target=java.util.List\ save()
 numComments=3

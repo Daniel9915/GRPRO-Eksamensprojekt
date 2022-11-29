@@ -1,7 +1,9 @@
 #BlueJ class context
 comment0.target=DataAccessImpl
 comment1.params=
-comment1.target=java.util.List\ load()
-comment2.params=
-comment2.target=java.util.List\ save()
-numComments=3
+comment1.target=DataAccessImpl()
+comment2.params=path
+comment2.target=java.util.List\ load(java.lang.String)
+comment3.params=
+comment3.target=java.util.List\ save()
+numComments=4
