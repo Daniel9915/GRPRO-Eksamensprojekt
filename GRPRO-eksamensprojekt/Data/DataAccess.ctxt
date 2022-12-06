@@ -2,6 +2,6 @@
 comment0.target=DataAccess
 comment1.params=path
 comment1.target=java.util.List\ load(java.lang.String)
-comment2.params=
-comment2.target=java.util.List\ save()
+comment2.params=data
+comment2.target=void\ save(java.util.List)
 numComments=3
