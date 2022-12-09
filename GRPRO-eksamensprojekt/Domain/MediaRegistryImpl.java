@@ -20,6 +20,9 @@ public class MediaRegistryImpl implements MediaRegistry{
     public MediaRegistryImpl(){
         data = new DataAccessImpl();
         initialize();
+        filmData = data.load("film.txt");
+        serierData = data.load("serier.txt");
+        favorit = data.load("favorit.txt");
 
     }
 
@@ -39,6 +42,7 @@ public class MediaRegistryImpl implements MediaRegistry{
             String imgPath = name + ".jpg";
             
             Film f = new Film(name, startYear, genre, rating, imgPath);
+            
             film.add(f);
         }
         
