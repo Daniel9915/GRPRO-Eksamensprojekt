@@ -1,7 +1,8 @@
 package Domain;
+import java.util.HashSet;
 
 public class Film extends Media{
-    public static void main(String[] args){
-        
+    public Film (String name, int startYear, HashSet<String> genre, double rating, String imgPath){
+        super(name, startYear, genre, rating, imgPath);
     }
 }
