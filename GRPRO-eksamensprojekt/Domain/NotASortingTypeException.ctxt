@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=NotASortingTypeException
+comment1.params=requestedSortingType
+comment1.target=NotASortingTypeException(java.lang.String)
+comment2.params=
+comment2.target=java.lang.String\ acceptedSortingTypes()
+numComments=3

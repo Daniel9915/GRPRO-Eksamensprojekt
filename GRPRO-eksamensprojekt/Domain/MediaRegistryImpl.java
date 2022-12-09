@@ -13,13 +13,14 @@ public class MediaRegistryImpl implements MediaRegistry{
     
     public MediaRegistryImpl(){
         data = new DataAccessImpl();
+        initialize();
 
     }
 
     public void initialize(){
-        film = data.load("film.txt");
-        serier = data.load("serier.txt");
-        favorit = data.load("favorit.txt");
+        film = data.load("./MovieData/serier.txt");
+        serier = data.load("./MovieData/serier.txt");
+        favorit = data.load("./MovieData/favorit.txt");
         //Billeder
     }
 
@@ -30,6 +31,19 @@ public class MediaRegistryImpl implements MediaRegistry{
     }
 
     public ArrayList<Media> sortMedia(String sortingType){
+        if(sortingType == "rating"){
+            
+        }
+        if(sortingType == "genre"){
+            
+        }
+        if(sortingType == "alphabetically"){
+            
+        }
+        if(sortingType == "release"){
+            
+        }
+        
         return null;
     }
 
