@@ -6,7 +6,7 @@ import java.util.List;
 class test{
     
     public static void main(){
-        DataAccessImpl test = new DataAccessImpl();
+        DataAccess test = new DataAccessImpl();
         
         List<String> testList = test.load("film.txt");
         

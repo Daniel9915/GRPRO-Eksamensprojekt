@@ -12,24 +12,45 @@ public class MediaRegistryImpl implements MediaRegistry{
     protected List<String> filmData;
     protected List<Film> film = new ArrayList<Film>();
     
+    protected List<String> favFilmData;
+    protected List<Film> favFilm = new ArrayList<Film>();
+    
+    
     protected List<String> serierData;
     protected List<Serier> serier = new ArrayList<Serier>();
     
-    protected List<String> favorit;
+    protected List<String> favSerierData;
+    protected List<Serier> favSerier = new ArrayList<Serier>();
     
     public MediaRegistryImpl(){
         data = new DataAccessImpl();
         initialize();
         filmData = data.load("film.txt");
         serierData = data.load("serier.txt");
-        favorit = data.load("favorit.txt");
+        favFilmData = data.load("favFilm.txt");
+        favSerierData = data.load("favSerier.txt");
 
     }
+    
+    
 
     public void initialize(){
-        for(String fd : filmData){
-            String[] contents = fd.split(";");
+        film = initFilm(filmData);
+        favFilm = initFilm(favFilmData);
+        
+        serier = initSerier(serierData);
+        favSerier = initSerier(favSerierData);
+        
+        //Billeder
+    }
+    
+    private List<Film> initFilm(List<String> data){
+        List<Film> returnFilm = new ArrayList<Film>();
+        for(String d : data){
+            String[] contents = d.split(";");
+            
             String name = contents[0];
+            
             int startYear = Integer.parseInt(contents[1].replace(" ", ""));
             
             String[] genres = contents[2].replace(" ", "").split(", ");
@@ -39,14 +60,20 @@ public class MediaRegistryImpl implements MediaRegistry{
             }
             
             double rating = Double.parseDouble(contents[3].replace(",", ".").replace(" ", ""));
+            
             String imgPath = name + ".jpg";
             
-            Film f = new Film(name, startYear, genre, rating, imgPath);
+            Film f = new Film(name, startYear, genre, rating, imgPath, d);
             
-            film.add(f);
+            returnFilm.add(f);
         }
         
-        for(String sd : serierData){
+        return returnFilm;
+    }
+    
+    private List<Serier> initSerier(List<String> data){
+        List<Serier> returnSerier = new ArrayList<Serier>();
+        for(String sd : data){
             String[] contents = sd.split(";");
             String name = contents[0];
             
@@ -77,11 +104,12 @@ public class MediaRegistryImpl implements MediaRegistry{
             }
             
             
-            Serier s = new Serier(name, startYear, genre, rating, imgPath, endYear, seasonsEp);
-            serier.add(s);
+            Serier s = new Serier(name, startYear, genre, rating, imgPath, sd, endYear, seasonsEp);
+            
+            returnSerier.add(s);
         }
         
-        //Billeder
+        return returnSerier;
     }
 
     public void addFavorite(String name){

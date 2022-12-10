@@ -1,7 +1,10 @@
 #BlueJ package file
 dependency1.from=test
-dependency1.to=DataAccessImpl
+dependency1.to=DataAccess
 dependency1.type=UsesDependency
+dependency2.from=test
+dependency2.to=DataAccessImpl
+dependency2.type=UsesDependency
 objectbench.height=93
 objectbench.width=760
 package.divider.horizontal=0.6
@@ -12,7 +15,7 @@ package.editor.x=989
 package.editor.y=304
 package.frame.height=600
 package.frame.width=800
-package.numDependencies=1
+package.numDependencies=2
 package.numTargets=3
 package.showExtends=true
 package.showUses=true

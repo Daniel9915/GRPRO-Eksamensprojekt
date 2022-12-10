@@ -1,5 +1,5 @@
 #BlueJ class context
 comment0.target=Film
-comment1.params=args
-comment1.target=void\ main(java.lang.String[])
+comment1.params=name\ startYear\ genre\ rating\ imgPath\ raw
+comment1.target=Film(java.lang.String,\ int,\ java.util.HashSet,\ double,\ java.lang.String,\ java.lang.String)
 numComments=2
