@@ -86,24 +86,14 @@ public class MediaRegistryImpl implements MediaRegistry{
         HashSet<Media> tempSet = new HashSet<>();
         if(genre.size() != 0){
             for(String g: genre){
-                System.out.println("Testing for genre: " + g );
                 for(Media m: tempList){
-                    System.out.print("Testing for media " + m.name + " with genre ");
-                    for(String mg: m.genre){
-                        System.out.print(mg + " ");
-                    }
-                    System.out.println();
                     mediaGenreLoop:
                     for(String mg: m.genre){
-                        System.out.println("Genre: " + mg);
                         if(mg.equals(g)){
                             tempSet.add(m);
-                            
-                            System.out.println("Media " + m.name + " accepted");
                             break mediaGenreLoop;
                         }
                     }
-                    System.out.println();
                 }
             }
         }

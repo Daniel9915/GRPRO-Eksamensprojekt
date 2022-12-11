@@ -14,7 +14,7 @@ public class StreamingUI{
         registry.initialize();
         ArrayList<String> testGenre = new ArrayList<>();
         
-        testGenre.add("Drama");
+        testGenre.add("Sci-fi");
         //testGenre.add("Drama");
         //testGenre.add("Adventure");
         //testGenre.add("History");
