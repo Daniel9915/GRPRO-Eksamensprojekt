@@ -10,16 +10,16 @@ public class MediaRegistryImpl implements MediaRegistry{
     DataAccess data;
 
     protected List<String> filmData;
-    protected List<Film> film = new ArrayList<Film>();
+    protected List<Film> filmList = new ArrayList<Film>();
 
     protected List<String> favFilmData;
-    protected List<Film> favFilm = new ArrayList<Film>();
+    protected List<Film> favFilmList = new ArrayList<Film>();
 
     protected List<String> serierData;
-    protected List<Serier> serier = new ArrayList<Serier>();
+    protected List<Serier> seriesList = new ArrayList<Serier>();
 
     protected List<String> favSerierData;
-    protected List<Serier> favSerier = new ArrayList<Serier>();
+    protected List<Serier> favSeriesList = new ArrayList<Serier>();
 
     public MediaRegistryImpl(){
         data = new DataAccessImpl();
@@ -33,23 +33,23 @@ public class MediaRegistryImpl implements MediaRegistry{
     }
 
     public void initialize(){
-        film = initFilm(filmData);
-        favFilm = initFilm(favFilmData);
+        filmList = initFilm(filmData);
+        favFilmList = initFilm(favFilmData);
 
-        serier = initSerier(serierData);
-        favSerier = initSerier(favSerierData);
+        seriesList = initSerier(serierData);
+        favSeriesList = initSerier(favSerierData);
 
         //Billeder
     }
 
     public ArrayList<Media> sortMedia(String sortingType, String genre, boolean releaseDate, boolean alphabetically){
-        if(sortingType != "film" || sortingType != "series" || sortingType != "favorites"){
+        if(sortingType != "film" && sortingType != "series" && sortingType != "favorites"){
             throw new NotASortingTypeException(sortingType);
         }
-        if(genre != "Drama"|| genre != "Romance"|| genre != "Crime"|| genre != "History"|| genre != "Fantasy"|| genre != "Family"|| 
-        genre != "Adventure"|| genre != "Mystery"|| genre != "Thriller"|| genre != "Horror"|| genre != "Sci-fi"|| genre != "Musical"|| 
-        genre != "Comedy"|| genre != "Biography"|| genre != "War"|| genre != "Action"|| genre != "Western"|| genre != "Film-Noir"|| 
-        genre != "Talk-show"|| genre != "Documentary"|| genre != "Sport"|| genre != "Animation"){
+        if(genre != "Drama" && genre != "Romance"&& genre != "Crime"&& genre != "History"&& genre != "Fantasy"&& genre != "Family"&& 
+        genre != "Adventure"&& genre != "Mystery"&& genre != "Thriller"&& genre != "Horror"&& genre != "Sci-fi"&& genre != "Musical"&& 
+        genre != "Comedy"&& genre != "Biography"&& genre != "War"&& genre != "Action"&& genre != "Western"&& genre != "Film-Noir"&& 
+        genre != "Talk-show"&& genre != "Documentary"&& genre != "Sport"&& genre != "Animation"){
             throw new NotAGenreException(genre);
         }
         if(releaseDate && alphabetically){
@@ -57,7 +57,21 @@ public class MediaRegistryImpl implements MediaRegistry{
         }
 
         ArrayList<Media> finalList = new ArrayList<>();
-
+        ArrayList<Media> tempList = new ArrayList<>();
+        switch(genre){
+            case "film":
+                tempList = new ArrayList<Media>(filmList);
+            break;
+            case "series":
+                tempList = new ArrayList<Media>(seriesList);
+            break;
+            case "favorites":
+                tempList = new ArrayList<Media>(favSeriesList);
+            break;
+            
+        }
+        
+        
         return null;
     }
 
@@ -66,19 +80,19 @@ public class MediaRegistryImpl implements MediaRegistry{
     }
 
     public List<Film> getFilm(){
-        return film;
+        return filmList;
     }
 
     public List<Serier> getSerier(){
-        return serier;
+        return seriesList;
     }
 
     public List<Film> getFavFilm(){
-        return favFilm;
+        return favFilmList;
     }
 
     public List<Serier> getFavSerier(){
-        return favSerier;
+        return favSeriesList;
     }
 
     private List<Film> initFilm(List<String> data){
@@ -148,42 +162,42 @@ public class MediaRegistryImpl implements MediaRegistry{
 
     public void addFavorite(Media media){
         if (media instanceof Film){
-            for(Film f : favFilm){
+            for(Film f : favFilmList){
                 if (f.name.equals(media.name)){//need change
                     return;
                     //throw new AlreadyInFavoritesException(media);//idk man
                 }
             }
             Film film = (Film) media;
-            favFilm.add(film);
-            data.save(filmToRaw(favFilm), "film");
+            favFilmList.add(film);
+            data.save(filmToRaw(favFilmList), "film");
         }else if (media instanceof Serier){
-            for(Serier s : favSerier){
+            for(Serier s : favSeriesList){
                 if (s.name.equals(media.name)){
                     return;
                     //throw new AlreadyInFavoritesException(media);
                 }
             }
             Serier serier = (Serier) media;
-            favSerier.add(serier);
-            data.save(serierToRaw(favSerier), "serier");
+            favSeriesList.add(serier);
+            data.save(serierToRaw(favSeriesList), "serier");
         }
     }
 
     public void removeFavorite(Media media){
         if (media instanceof Film){
-            for(Film f : favFilm){
+            for(Film f : favFilmList){
                 if (f.name.equals(media.name)){
-                    favFilm.remove(f);
-                    data.save(filmToRaw(favFilm), "film");
+                    favFilmList.remove(f);
+                    data.save(filmToRaw(favFilmList), "film");
                     return;
                 }
             }
         }else if (media instanceof Serier){
-            for(Serier s : favSerier){
+            for(Serier s : favSeriesList){
                 if (s.name.equals(media.name)){
-                    favSerier.remove(s);
-                    data.save(serierToRaw(favSerier), "serier");
+                    favSeriesList.remove(s);
+                    data.save(serierToRaw(favSeriesList), "serier");
                     return;
                 }
             }
