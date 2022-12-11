@@ -7,24 +7,29 @@ public class StreamingUI{
     public static void main(String[] args){
         MediaRegistry registry = new MediaRegistryImpl();
         registry.initialize();
-        
-        //TESTING SORT MEDIA \/
-        
+    }
+    
+    public static void testingSortMedia(){
+        MediaRegistry registry = new MediaRegistryImpl();
+        registry.initialize();
         ArrayList<String> testGenre = new ArrayList<>();
-        testGenre.add("Sci-fi");
+        
         testGenre.add("Drama");
+        //testGenre.add("Drama");
         //testGenre.add("Adventure");
         //testGenre.add("History");
         //testGenre.add("Biography");
         
-        /*System.out.println("WHOLE LIST: ");
+        
+        
+        System.out.println("WHOLE LIST: ");
         for(Film f: registry.getFilm()){
             System.out.print("Name: " + f.name + " Genre: ");
             for(String g: f.genre){
                 System.out.print(g + ", ");
             }
             System.out.println();
-        }*/
+        }
         
         
         System.out.println();
@@ -37,9 +42,6 @@ public class StreamingUI{
             }
             System.out.println();
         }
-        
-        
-        //TESTING SORT MEDIA /\
     }
     
 }
