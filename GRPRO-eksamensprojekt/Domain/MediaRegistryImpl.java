@@ -97,13 +97,28 @@ public class MediaRegistryImpl implements MediaRegistry{
                 }
             }
         }
+        ArrayList<Media> tempListTwo = new ArrayList<>();
         if(genre.size() != 0){
-            finalList = new ArrayList(tempSet);
+            tempListTwo = new ArrayList(tempSet);
         }else{
-            finalList = new ArrayList(tempList);
+            tempListTwo = new ArrayList(tempList);
         }
         
-        //sort release / alphabetically        
+        //sort release / alphabetically
+        //if both false then none of them apply
+        if(!releaseDate && !alphabetically){
+            return tempListTwo;
+        }
+        
+        
+        if(releaseDate){
+            
+        }
+        
+        if(alphabetically){
+            
+        }
+        
         return finalList;
     }
 
