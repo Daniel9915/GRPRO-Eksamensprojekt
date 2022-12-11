@@ -1,5 +1,0 @@
-#BlueJ class context
-comment0.target=Serier
-comment1.params=name\ startYear\ genre\ rating\ imgPath\ raw\ endYear\ seasonsEp
-comment1.target=Serier(java.lang.String,\ int,\ java.util.HashSet,\ double,\ java.lang.String,\ java.lang.String,\ int,\ java.util.List)
-numComments=2

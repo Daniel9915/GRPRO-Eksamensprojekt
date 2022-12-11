@@ -15,18 +15,18 @@ public class MediaRegistryImpl implements MediaRegistry{
     protected List<String> favFilmData;
     protected List<Film> favFilmList = new ArrayList<Film>();
 
-    protected List<String> serierData;
-    protected List<Serier> seriesList = new ArrayList<Serier>();
+    protected List<String> seriesData;
+    protected List<Series> seriesList = new ArrayList<Series>();
 
-    protected List<String> favSerierData;
-    protected List<Serier> favSeriesList = new ArrayList<Serier>();
+    protected List<String> favSeriesData;
+    protected List<Series> favSeriesList = new ArrayList<Series>();
 
     public MediaRegistryImpl(){
         data = new DataAccessImpl();
         filmData = data.load("film.txt");
-        serierData = data.load("serier.txt");
+        seriesData = data.load("series.txt");
         favFilmData = data.load("favFilm.txt");
-        favSerierData = data.load("favSerier.txt");
+        favSeriesData = data.load("favSeries.txt");
 
         initialize();
 
@@ -36,14 +36,14 @@ public class MediaRegistryImpl implements MediaRegistry{
         filmList = initFilm(filmData);
         favFilmList = initFilm(favFilmData);
 
-        seriesList = initSerier(serierData);
-        favSeriesList = initSerier(favSerierData);
+        seriesList = initSeries(seriesData);
+        favSeriesList = initSeries(favSeriesData);
 
         //Billeder
     }
 
     public ArrayList<Media> sortMedia(String sortingType, String genre, boolean releaseDate, boolean alphabetically){
-        if(sortingType != "film" && sortingType != "series" && sortingType != "favorites"){
+        if(sortingType != "film" && sortingType != "series" && sortingType != "favorite film" && sortingType != "favorite series"){
             throw new NotASortingTypeException(sortingType);
         }
         if(genre != "Drama" && genre != "Romance"&& genre != "Crime"&& genre != "History"&& genre != "Fantasy"&& genre != "Family"&& 
@@ -60,16 +60,20 @@ public class MediaRegistryImpl implements MediaRegistry{
         ArrayList<Media> tempList = new ArrayList<>();
         switch(genre){
             case "film":
-                tempList = new ArrayList<Media>(filmList);
+                tempList = new ArrayList<Media>(getFilm());
             break;
             case "series":
-                tempList = new ArrayList<Media>(seriesList);
+                tempList = new ArrayList<Media>(getSeries());
             break;
-            case "favorites":
+            case "favorite film":
+                tempList = new ArrayList<Media>(favFilmList);
+            break;
+            case "favorite series":
                 tempList = new ArrayList<Media>(favSeriesList);
             break;
-            
         }
+        
+        
         
         
         return null;
@@ -79,20 +83,20 @@ public class MediaRegistryImpl implements MediaRegistry{
         return null;
     }
 
-    public List<Film> getFilm(){
-        return filmList;
+    public ArrayList<Film> getFilm(){
+        return new ArrayList<Film>(filmList);
     }
 
-    public List<Serier> getSerier(){
-        return seriesList;
+    public ArrayList<Series> getSeries(){
+        return new ArrayList<Series>(seriesList);
     }
 
-    public List<Film> getFavFilm(){
-        return favFilmList;
+    public ArrayList<Film> getFavFilm(){
+        return new ArrayList<Film>(favFilmList);
     }
 
-    public List<Serier> getFavSerier(){
-        return favSeriesList;
+    public ArrayList<Series> getFavSeries(){
+        return new ArrayList<Series>(favSeriesList);
     }
 
     private List<Film> initFilm(List<String> data){
@@ -122,8 +126,8 @@ public class MediaRegistryImpl implements MediaRegistry{
         return returnFilm;
     }
 
-    private List<Serier> initSerier(List<String> data){
-        List<Serier> returnSerier = new ArrayList<Serier>();
+    private List<Series> initSeries(List<String> data){
+        List<Series> returnSeries = new ArrayList<Series>();
         for(String sd : data){
             String[] contents = sd.split(";");
             String name = contents[0];
@@ -153,11 +157,11 @@ public class MediaRegistryImpl implements MediaRegistry{
                 seasonsEp.add(Integer.parseInt(episodes[1]));
             }
 
-            Serier s = new Serier(name, startYear, genre, rating, imgPath, sd, endYear, seasonsEp);
-            returnSerier.add(s);
+            Series s = new Series(name, startYear, genre, rating, imgPath, sd, endYear, seasonsEp);
+            returnSeries.add(s);
         }
 
-        return returnSerier;
+        return returnSeries;
     }
 
     public void addFavorite(Media media){
@@ -171,16 +175,16 @@ public class MediaRegistryImpl implements MediaRegistry{
             Film film = (Film) media;
             favFilmList.add(film);
             data.save(filmToRaw(favFilmList), "film");
-        }else if (media instanceof Serier){
-            for(Serier s : favSeriesList){
+        }else if (media instanceof Series){
+            for(Series s : favSeriesList){
                 if (s.name.equals(media.name)){
                     return;
                     //throw new AlreadyInFavoritesException(media);
                 }
             }
-            Serier serier = (Serier) media;
-            favSeriesList.add(serier);
-            data.save(serierToRaw(favSeriesList), "serier");
+            Series series = (Series) media;
+            favSeriesList.add(series);
+            data.save(seriesToRaw(favSeriesList), "series");
         }
     }
 
@@ -193,11 +197,11 @@ public class MediaRegistryImpl implements MediaRegistry{
                     return;
                 }
             }
-        }else if (media instanceof Serier){
-            for(Serier s : favSeriesList){
+        }else if (media instanceof Series){
+            for(Series s : favSeriesList){
                 if (s.name.equals(media.name)){
                     favSeriesList.remove(s);
-                    data.save(serierToRaw(favSeriesList), "serier");
+                    data.save(seriesToRaw(favSeriesList), "series");
                     return;
                 }
             }
@@ -212,9 +216,9 @@ public class MediaRegistryImpl implements MediaRegistry{
         return returnString;
     }
 
-    private List<String> serierToRaw(List<Serier> serier){//hmm
+    private List<String> seriesToRaw(List<Series> series){//hmm
         List<String> returnString = new ArrayList<>();
-        for(Serier s : serier){
+        for(Series s : series){
             returnString.add(s.raw);
         }
         return returnString;

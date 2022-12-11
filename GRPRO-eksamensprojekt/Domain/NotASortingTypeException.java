@@ -7,6 +7,6 @@ public class NotASortingTypeException extends RuntimeException{
     }
     
     String acceptedSortingTypes(){
-        return "Accepted sortingtypes: 'film', 'series', 'favorites'";
+        return "Accepted sortingtypes: 'film', 'series', 'favorite film', 'favorite series";
     }
 }

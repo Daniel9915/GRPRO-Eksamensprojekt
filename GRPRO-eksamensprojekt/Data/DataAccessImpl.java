@@ -51,9 +51,9 @@ public class DataAccessImpl implements DataAccess{
             } catch (FileNotFoundException ex) {
                 System.out.println("No file. Saving nothing.");
             }
-        }else if(mediaType.equals("serier")){
+        }else if(mediaType.equals("series")){
             try {
-                File f = new File(parentDir,"MovieData"+File.separator+"favSerier.txt");
+                File f = new File(parentDir,"MovieData"+File.separator+"favSeries.txt");
                 PrintWriter pw = new PrintWriter(f);
                 for(String d : data)
                 {

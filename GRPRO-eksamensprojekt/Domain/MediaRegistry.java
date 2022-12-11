@@ -9,8 +9,8 @@ public interface MediaRegistry{
    
    ArrayList<Media> sortMedia(String sortingType, String genre, boolean releaseDate, boolean alphabetically);
    ArrayList<Media> searchMedia(String search);
-   List<Film> getFilm();
-   List<Serier> getSerier();
-   List<Film> getFavFilm();
-   List<Serier> getFavSerier();
+   ArrayList<Film> getFilm();
+   ArrayList<Series> getSeries();
+   ArrayList<Film> getFavFilm();
+   ArrayList<Series> getFavSeries();
 }
