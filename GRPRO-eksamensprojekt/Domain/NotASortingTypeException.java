@@ -1,12 +1,12 @@
 package Domain;
 
-public class NotASortingTypeException extends Exception{
+public class NotASortingTypeException extends RuntimeException{
     
     NotASortingTypeException(String requestedSortingType){
-        super("The string " + requestedSortingType + " is not accepted");
+        super("The sortingtype " + requestedSortingType + " is not accepted");
     }
     
     String acceptedSortingTypes(){
-        return "'rating', 'genre', 'alphabetically', 'release'";
+        return "Accepted sortingtypes: 'film', 'series', 'favorites'";
     }
 }

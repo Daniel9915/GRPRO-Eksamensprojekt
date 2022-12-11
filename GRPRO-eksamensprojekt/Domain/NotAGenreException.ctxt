@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=NotAGenreException
+comment1.params=requestedSortingType
+comment1.target=NotAGenreException(java.lang.String)
+comment2.params=
+comment2.target=java.lang.String\ acceptedGenres()
+numComments=3

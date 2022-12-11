@@ -41,7 +41,47 @@ public class MediaRegistryImpl implements MediaRegistry{
 
         //Billeder
     }
+    
+    public ArrayList<Media> sortMedia(String sortingType, String genre, boolean releaseDate, boolean alphabetically){
+        if(sortingType != "film" || sortingType != "series" || sortingType != "favorites"){
+            throw new NotASortingTypeException(sortingType);
+        }
+        if(genre != "Drama"|| genre != "Romance"|| genre != "Crime"|| genre != "History"|| genre != "Fantasy"|| genre != "Family"|| 
+        genre != "Adventure"|| genre != "Mystery"|| genre != "Thriller"|| genre != "Horror"|| genre != "Sci-fi"|| genre != "Musical"|| 
+        genre != "Comedy"|| genre != "Biography"|| genre != "War"|| genre != "Action"|| genre != "Western"|| genre != "Film-Noir"|| 
+        genre != "Talk-show"|| genre != "Documentary"|| genre != "Sport"|| genre != "Animation"){
+            throw new NotAGenreException(genre);
+        }
+        if(releaseDate && alphabetically){
+            throw new TwoFiltersException();
+        }
+        
+        ArrayList<Media> finalList = new ArrayList<>();
+        
 
+        return null;
+    }
+    
+    public ArrayList<Media> searchMedia(String sortingType){
+        return null;
+    }
+
+    public List<Film> getFilm(){
+        return film;
+    }
+
+    public List<Serier> getSerier(){
+        return serier;
+    }
+
+    public List<Film> getFavFilm(){
+        return favFilm;
+    }
+
+    public List<Serier> getFavSerier(){
+        return favSerier;
+    }
+ 
     private List<Film> initFilm(List<String> data){
         List<Film> returnFilm = new ArrayList<Film>();
         for(String d : data){
@@ -148,41 +188,10 @@ public class MediaRegistryImpl implements MediaRegistry{
 
     public void removeFavorite(String name){
     }
+    
+    
 
-    public ArrayList<Media> sortMedia(String sortingType){
-        if(sortingType == "rating"){
+    
 
-        }
-        if(sortingType == "genre"){
-
-        }
-        if(sortingType == "alphabetically"){
-
-        }
-        if(sortingType == "release"){
-
-        }
-
-        return null;
-    }
-
-    public ArrayList<Media> searchMedia(String search){
-        return null;
-    }
-
-    public List<Film> getFilm(){
-        return film;
-    }
-
-    public List<Serier> getSerier(){
-        return serier;
-    }
-
-    public List<Film> getFavFilm(){
-        return favFilm;
-    }
-
-    public List<Serier> getFavSerier(){
-        return favSerier;
-    }
+    
 }
