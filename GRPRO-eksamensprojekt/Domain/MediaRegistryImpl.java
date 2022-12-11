@@ -42,23 +42,31 @@ public class MediaRegistryImpl implements MediaRegistry{
         //Billeder
     }
 
-    public ArrayList<Media> sortMedia(String sortingType, String genre, boolean releaseDate, boolean alphabetically){
+    public ArrayList<Media> sortMedia(String sortingType, ArrayList<String> genre, boolean releaseDate, boolean alphabetically){
+        //Exceptions
         if(sortingType != "film" && sortingType != "series" && sortingType != "favorite film" && sortingType != "favorite series"){
             throw new NotASortingTypeException(sortingType);
         }
-        if(genre != "Drama" && genre != "Romance"&& genre != "Crime"&& genre != "History"&& genre != "Fantasy"&& genre != "Family"&& 
-        genre != "Adventure"&& genre != "Mystery"&& genre != "Thriller"&& genre != "Horror"&& genre != "Sci-fi"&& genre != "Musical"&& 
-        genre != "Comedy"&& genre != "Biography"&& genre != "War"&& genre != "Action"&& genre != "Western"&& genre != "Film-Noir"&& 
-        genre != "Talk-show"&& genre != "Documentary"&& genre != "Sport"&& genre != "Animation"){
-            throw new NotAGenreException(genre);
+        if(genre.size() != 0){
+            for(String g: genre){
+                if(g != "Drama" && g != "Romance"&& g != "Crime"&& g != "History"&& g != "Fantasy"&& g != "Family"&& 
+                   g != "Adventure"&& g != "Mystery"&& g != "Thriller"&& g != "Horror"&& g != "Sci-fi"&& g != "Musical"&& 
+                   g != "Comedy"&& g != "Biography"&& g != "War"&& g != "Action"&& g != "Western"&& g != "Film-Noir"&& 
+                   g != "Talk-show"&& g != "Documentary"&& g != "Sport"&& g != "Animation"
+                   ){
+                    throw new NotAGenreException(g);
+                }
+            }
         }
+        
         if(releaseDate && alphabetically){
             throw new TwoFiltersException();
         }
-
+        
+        //Sorting
         ArrayList<Media> finalList = new ArrayList<>();
         ArrayList<Media> tempList = new ArrayList<>();
-        switch(genre){
+        switch(sortingType){
             case "film":
                 tempList = new ArrayList<Media>(getFilm());
             break;
@@ -66,17 +74,47 @@ public class MediaRegistryImpl implements MediaRegistry{
                 tempList = new ArrayList<Media>(getSeries());
             break;
             case "favorite film":
-                tempList = new ArrayList<Media>(favFilmList);
+                tempList = new ArrayList<Media>(getFavFilm());
             break;
             case "favorite series":
-                tempList = new ArrayList<Media>(favSeriesList);
+                tempList = new ArrayList<Media>(getFavSeries());
             break;
         }
         
         
+        //Sort genres
+        HashSet<Media> tempSet = new HashSet<>();
+        if(genre.size() != 0){
+            for(String g: genre){
+                System.out.println("Testing for genre: " + g );
+                for(Media m: tempList){
+                    System.out.print("Testing for media " + m.name + " with genre ");
+                    for(String mg: m.genre){
+                        System.out.print(mg + " ");
+                    }
+                    System.out.println();
+                    mediaGenreLoop:
+                    for(String mg: m.genre){
+                        System.out.println("Genre: " + mg);
+                        if(mg.equals(g)){
+                            tempSet.add(m);
+                            
+                            System.out.println("Media " + m.name + " accepted");
+                            break mediaGenreLoop;
+                        }
+                    }
+                    System.out.println();
+                }
+            }
+        }
+        if(genre.size() != 0){
+            finalList = new ArrayList(tempSet);
+        }else{
+            finalList = new ArrayList(tempList);
+        }
         
-        
-        return null;
+        //sort release / alphabetically        
+        return finalList;
     }
 
     public ArrayList<Media> searchMedia(String sortingType){

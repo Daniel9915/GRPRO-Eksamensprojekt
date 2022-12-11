@@ -2,12 +2,12 @@ package Domain;
 import java.util.HashSet;
 
 public abstract class Media{
-    String name;
-    int startYear;
-    HashSet<String> genre;
-    double rating;
-    String imgPath;
-    String raw;
+    public String name;
+    public int startYear;
+    public HashSet<String> genre;
+    public double rating;
+    public String imgPath;
+    public String raw;
     
     public Media(String name, int startYear, HashSet<String> genre, double rating, String imgPath, String raw){
         this.name = name;
