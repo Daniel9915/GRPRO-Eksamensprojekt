@@ -41,7 +41,7 @@ public class MediaRegistryImpl implements MediaRegistry{
 
         //Billeder
     }
-    
+
     public ArrayList<Media> sortMedia(String sortingType, String genre, boolean releaseDate, boolean alphabetically){
         if(sortingType != "film" || sortingType != "series" || sortingType != "favorites"){
             throw new NotASortingTypeException(sortingType);
@@ -55,13 +55,12 @@ public class MediaRegistryImpl implements MediaRegistry{
         if(releaseDate && alphabetically){
             throw new TwoFiltersException();
         }
-        
+
         ArrayList<Media> finalList = new ArrayList<>();
-        
 
         return null;
     }
-    
+
     public ArrayList<Media> searchMedia(String sortingType){
         return null;
     }
@@ -81,7 +80,7 @@ public class MediaRegistryImpl implements MediaRegistry{
     public List<Serier> getFavSerier(){
         return favSerier;
     }
- 
+
     private List<Film> initFilm(List<String> data){
         List<Film> returnFilm = new ArrayList<Film>();
         for(String d : data){
@@ -162,11 +161,32 @@ public class MediaRegistryImpl implements MediaRegistry{
             for(Serier s : favSerier){
                 if (s.name.equals(media.name)){
                     return;
+                    //throw new AlreadyInFavoritesException(media);
                 }
             }
             Serier serier = (Serier) media;
             favSerier.add(serier);
-            data.save(serierToRaw(favSerier), "film");
+            data.save(serierToRaw(favSerier), "serier");
+        }
+    }
+
+    public void removeFavorite(Media media){
+        if (media instanceof Film){
+            for(Film f : favFilm){
+                if (f.name.equals(media.name)){
+                    favFilm.remove(f);
+                    data.save(filmToRaw(favFilm), "film");
+                    return;
+                }
+            }
+        }else if (media instanceof Serier){
+            for(Serier s : favSerier){
+                if (s.name.equals(media.name)){
+                    favSerier.remove(s);
+                    data.save(serierToRaw(favSerier), "serier");
+                    return;
+                }
+            }
         }
     }
 
@@ -177,7 +197,7 @@ public class MediaRegistryImpl implements MediaRegistry{
         }
         return returnString;
     }
-    
+
     private List<String> serierToRaw(List<Serier> serier){//hmm
         List<String> returnString = new ArrayList<>();
         for(Serier s : serier){
@@ -186,12 +206,7 @@ public class MediaRegistryImpl implements MediaRegistry{
         return returnString;
     }
 
-    public void removeFavorite(String name){
-    }
-    
     
 
-    
 
-    
 }

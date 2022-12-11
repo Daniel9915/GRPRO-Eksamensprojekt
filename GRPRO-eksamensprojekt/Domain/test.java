@@ -14,6 +14,8 @@ class test{
         test.addFavorite(test.getFilm().get(2));
         test.addFavorite(test.getFilm().get(3));
         
+        test.removeFavorite(test.getFilm().get(3));
+        
         //Film testFilm = new Film("hej", 2, new HashSet<String>(Arrays.asList("a", "b", "c")), 0.2, "aa", "aa");
         //test.addFavorite(testFilm);
         
