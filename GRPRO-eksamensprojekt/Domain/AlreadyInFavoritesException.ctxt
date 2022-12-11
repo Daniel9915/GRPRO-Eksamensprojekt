@@ -1,0 +1,5 @@
+#BlueJ class context
+comment0.target=AlreadyInFavoritesException
+comment1.params=favoritedMedia
+comment1.target=AlreadyInFavoritesException(Media)
+numComments=2

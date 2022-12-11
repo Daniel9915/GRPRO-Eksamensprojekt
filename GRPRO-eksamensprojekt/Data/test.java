@@ -10,9 +10,13 @@ class test{
         
         List<String> testList = test.load("film.txt");
         
+        for(String d : testList){
+            System.out.println("yes");
+        }
+        
         //System.out.println(testList);
         
-        int number = 0;
+        /*int number = 0;
         for (String e : testList){
             
             
@@ -21,7 +25,7 @@ class test{
             System.out.println(number + " " + e);
         }
         
-        test.save(testList);
+        test.save(testList, "film");*/
         
     }
     

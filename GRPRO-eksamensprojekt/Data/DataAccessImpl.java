@@ -8,17 +8,21 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class DataAccessImpl implements DataAccess{
-    
+
+    File currentDir = new File(".");
+    File parentDir = currentDir.getParentFile();
+
     public DataAccessImpl(){
-        
+
     }
-    
+
     @Override
     public List<String> load(String path){
         List<String> result = new ArrayList<>();
-        
+
         try{
-            File loadFile = new File(path);
+
+            File loadFile = new File(parentDir,"MovieData"+File.separator+path);
             Scanner s = new Scanner(loadFile);
             while(s.hasNextLine())
             {
@@ -30,21 +34,36 @@ public class DataAccessImpl implements DataAccess{
         {
             System.out.println("Nothing found. Returning empty result.");
         }
-        
+
         return result;
     }
 
-    public void save (List<String> data){
-        try {
-            File f = new File("favorites.txt");
-            PrintWriter pw = new PrintWriter(f);
-            for(String d : data)
-            {
-                pw.println(d);
+    public void save (List<String> data, String mediaType){
+        if(mediaType.equals("film")){
+            try {
+                File f = new File(parentDir,"MovieData"+File.separator+"favFilm.txt");
+                PrintWriter pw = new PrintWriter(f);
+                for(String d : data)
+                {
+                    pw.println(d);
+                }
+                pw.close();
+            } catch (FileNotFoundException ex) {
+                System.out.println("No file. Saving nothing.");
             }
-            pw.close();
-        } catch (FileNotFoundException ex) {
-            System.out.println("No file. Saving nothing.");
+        }else if(mediaType.equals("serier")){
+            try {
+                File f = new File(parentDir,"MovieData"+File.separator+"favSerier.txt");
+                PrintWriter pw = new PrintWriter(f);
+                for(String d : data)
+                {
+                    pw.println(d);
+                }
+                pw.close();
+            } catch (FileNotFoundException ex) {
+                System.out.println("No file. Saving nothing.");
+            }
         }
+
     }
 }
