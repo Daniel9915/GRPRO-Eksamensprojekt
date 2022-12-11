@@ -21,7 +21,7 @@ class test{
         
         List<String> testList = data.load("favFilm.txt");
         
-        System.out.println(test.getFavFilm());
+        System.out.println(test.getFilm().get(2).genre.size());
         
         
         //System.out.println(test.getFilm().get(2).raw);

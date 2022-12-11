@@ -121,22 +121,6 @@ public class MediaRegistryImpl implements MediaRegistry{
         return null;
     }
 
-    public ArrayList<Film> getFilm(){
-        return new ArrayList<Film>(filmList);
-    }
-
-    public ArrayList<Series> getSeries(){
-        return new ArrayList<Series>(seriesList);
-    }
-
-    public ArrayList<Film> getFavFilm(){
-        return new ArrayList<Film>(favFilmList);
-    }
-
-    public ArrayList<Series> getFavSeries(){
-        return new ArrayList<Series>(favSeriesList);
-    }
-
     private List<Film> initFilm(List<String> data){
         List<Film> returnFilm = new ArrayList<Film>();
         for(String d : data){
@@ -146,7 +130,7 @@ public class MediaRegistryImpl implements MediaRegistry{
 
             int startYear = Integer.parseInt(contents[1].replace(" ", ""));
 
-            String[] genres = contents[2].replace(" ", "").split(", ");
+            String[] genres = contents[2].replace(" ", "").split(",");
             HashSet<String> genre = new HashSet<String>();
             for (String g : genres){
                 genre.add(g);
@@ -179,7 +163,7 @@ public class MediaRegistryImpl implements MediaRegistry{
                 e.getMessage();
             }
 
-            String[] genres = contents[2].replace(" ", "").split(", ");
+            String[] genres = contents[2].replace(" ", "").split(",");
             HashSet<String> genre = new HashSet<String>();
             for (String g : genres){
                 genre.add(g);
@@ -262,7 +246,21 @@ public class MediaRegistryImpl implements MediaRegistry{
         return returnString;
     }
 
-    
+        public ArrayList<Film> getFilm(){
+        return new ArrayList<Film>(filmList);
+    }
+
+    public ArrayList<Series> getSeries(){
+        return new ArrayList<Series>(seriesList);
+    }
+
+    public ArrayList<Film> getFavFilm(){
+        return new ArrayList<Film>(favFilmList);
+    }
+
+    public ArrayList<Series> getFavSeries(){
+        return new ArrayList<Series>(favSeriesList);
+    }
 
 
 }
