@@ -19,12 +19,11 @@ public class StreamingUI{
         
         testGenre.add("Drama");
         //testGenre.add("Drama");
-        //testGenre.add("Adventure");
+        testGenre.add("Adventure");
         //testGenre.add("History");
         //testGenre.add("Biography");
         
-        
-        
+
         /*
         System.out.println("WHOLE LIST: ");
         for(Film f: registry.getFilm()){
@@ -36,11 +35,10 @@ public class StreamingUI{
         }
         */
         
-        
         System.out.println();
         System.out.println("SORTED LIST:");
         System.out.println();
-        for(Media m: registry.sortMedia("film",testGenre, true, false)){
+        for(Media m: registry.sortMedia("series",testGenre, true, false)){
             System.out.print("Name: " + m.name);
             System.out.println(" Release Year: " + m.startYear);
             System.out.print("Genre: " );

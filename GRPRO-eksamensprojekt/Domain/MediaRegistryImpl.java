@@ -81,11 +81,8 @@ public class MediaRegistryImpl implements MediaRegistry{
             break;
         }
         
-        
         //Sort genres
         HashSet<Media> genreSet = new HashSet<>();
-        
-        
         if(genre.size() != 0){
             for(String g: genre){
                 for(Media m: typeSortedList){
@@ -99,6 +96,8 @@ public class MediaRegistryImpl implements MediaRegistry{
                 }
             }
             finalList = new ArrayList(genreSet);
+        }else{
+            finalList = new ArrayList(typeSortedList);
         }
         
         //sort release / alphabetically
@@ -119,7 +118,6 @@ public class MediaRegistryImpl implements MediaRegistry{
         ArrayList<Media> newList = new ArrayList<>();
         while(inputList.size() > 0){
             lowestStartYear = inputList.get(0).startYear;
-            System.out.println(inputList.size());
             for(Media m: inputList){
                 if(m.startYear < lowestStartYear){
                     lowestStartYear = m.startYear;
@@ -139,8 +137,62 @@ public class MediaRegistryImpl implements MediaRegistry{
     }
     
     private ArrayList<Media> sortAlphabetically(ArrayList<Media> inputList){
+        ArrayList<Media> letterList = new ArrayList<Media>();
+        ArrayList<Media> numberList = new ArrayList<Media>();
+        ArrayList<Media> finalList = new ArrayList<Media>();
         
-        return inputList;
+        for(Media m: inputList){
+            char firstChar = m.name.charAt(0);
+            System.out.println(firstChar);
+            if(Character.isLetter(firstChar)){
+                letterList.add(m);
+            }else if(Character.isDigit(firstChar)){
+                numberList.add(m);
+            }else{
+                System.out.println("It's none of them: " + m.name);  
+            }
+        }
+        
+        //Sort the numbers
+        System.out.println(numberList.size());
+        int lowestNumber;
+        while(numberList.size() > 0){
+            lowestNumber = Integer.parseInt(Character.toString(numberList.get(0).name.charAt(0)));
+            for(Media m: numberList){
+                int mNumber = Integer.parseInt(Character.toString(m.name.charAt(0)));
+                if(mNumber < lowestNumber){
+                    lowestNumber = mNumber;
+                }
+            }
+            addToList:
+            for(Media m: numberList){
+                int mNumber = Integer.parseInt(Character.toString(m.name.charAt(0)));
+                if(mNumber == lowestNumber){
+                    finalList.add(m);
+                    numberList.remove(m);
+                    break addToList;
+                }
+            }
+        }
+        
+        //Sort alphabetically
+        ArrayList<String> strList = new ArrayList<String>();
+        for(Media m: letterList){
+            strList.add(m.name);
+            
+        }
+        strList.sort(String::compareToIgnoreCase);
+        for(String s: strList){
+            mediaLoop:
+            for(Media m: letterList){
+                if(s.equals(m.name)){
+                    finalList.add(m);
+                    break mediaLoop;
+                }
+            }
+        }
+        
+        return finalList;
     }
 
     public ArrayList<Media> searchMedia(String sortingType){
