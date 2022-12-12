@@ -80,14 +80,17 @@ public class MainPage extends JFrame {
         movieButt.setPreferredSize(new Dimension(75,50));
         movieButt.setBackground(new Color(50,50,50));
         movieButt.setForeground(Color.red);
+        movieButt.setFocusable(false);
 
         JButton serieButt = new JButton("Series");
         serieButt.setBackground(new Color(50,50,50));
         serieButt.setForeground(Color.red);
-
+        serieButt.setFocusable(false);
+        
         JButton favoriteButt = new JButton("Favorites");
         favoriteButt.setBackground(new Color(50,50,50));
         favoriteButt.setForeground(Color.red);
+        favoriteButt.setFocusable(false);
 
         topCenterTop.add(movieButt);
         topCenterTop.add(serieButt);
@@ -99,12 +102,15 @@ public class MainPage extends JFrame {
         
         //combobox
         JComboBox genreBox = new JComboBox(genres);
+        genreBox.setFocusable(false);
         genreBox.setBackground(new Color(50,50,50));
         genreBox.setForeground(Color.red);
 
         //checkmarks
         JCheckBox releaseCheck = new JCheckBox("Release date");
+        releaseCheck.setFocusable(false);
         JCheckBox alphaCheck = new JCheckBox("Alphabetical");
+        alphaCheck.setFocusable(false);
 
 
         topCenterBot.add(genreBox);
@@ -114,6 +120,19 @@ public class MainPage extends JFrame {
 
         //TOP RIGHT
         
+        JTextField searchBar = new JTextField();
+        searchBar.setColumns(20);
+        
+        JLabel searchText = new JLabel("Search");
+        
+        
+        topRight.add(searchText);
+        topRight.add(searchBar);
+        
+        
+        
+        
+        //Finishing touches hoho
         topPanel.add(topLeft);
         topPanel.add(topCenter);
         topPanel.add(topRight);
