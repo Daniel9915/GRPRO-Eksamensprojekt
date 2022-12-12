@@ -17,7 +17,7 @@ public class StreamingUI{
         registry.initialize();
         ArrayList<String> testGenre = new ArrayList<>();
         
-        testGenre.add("Sci-fi");
+        testGenre.add("Drama");
         //testGenre.add("Drama");
         //testGenre.add("Adventure");
         //testGenre.add("History");
@@ -25,6 +25,7 @@ public class StreamingUI{
         
         
         
+        /*
         System.out.println("WHOLE LIST: ");
         for(Film f: registry.getFilm()){
             System.out.print("Name: " + f.name + " Genre: ");
@@ -33,17 +34,21 @@ public class StreamingUI{
             }
             System.out.println();
         }
+        */
         
         
         System.out.println();
         System.out.println("SORTED LIST:");
         System.out.println();
-        for(Media m: registry.sortMedia("film",testGenre, false, false)){
-            System.out.print("Name: " + m.name + " Genre: ");
+        for(Media m: registry.sortMedia("film",testGenre, true, false)){
+            System.out.print("Name: " + m.name);
+            System.out.println(" Release Year: " + m.startYear);
+            System.out.print("Genre: " );
             for(String g: m.genre){
                 System.out.print(g + ", ");
             }
             System.out.println();
+            System.out.println();   
         }
     }
     

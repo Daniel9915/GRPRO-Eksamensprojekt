@@ -106,20 +106,20 @@ public class MediaRegistryImpl implements MediaRegistry{
             return finalList; //if both false, return without more sorting
         }
         if(releaseDate){
-            
             finalList = sortByReleaseDate(finalList);
         }
         if(alphabetically){
             finalList = sortAlphabetically(finalList);
         }
-        
         return finalList;
     }
     
     private ArrayList<Media> sortByReleaseDate(ArrayList<Media> inputList){
-        int lowestStartYear = inputList.get(0).startYear;
+        int lowestStartYear;
         ArrayList<Media> newList = new ArrayList<>();
-        while(newList.size() > 0){
+        while(inputList.size() > 0){
+            lowestStartYear = inputList.get(0).startYear;
+            System.out.println(inputList.size());
             for(Media m: inputList){
                 if(m.startYear < lowestStartYear){
                     lowestStartYear = m.startYear;
@@ -135,7 +135,7 @@ public class MediaRegistryImpl implements MediaRegistry{
             }
         }
         
-        return inputList;
+        return newList;
     }
     
     private ArrayList<Media> sortAlphabetically(ArrayList<Media> inputList){
