@@ -116,7 +116,7 @@ public class MediaRegistryImpl implements MediaRegistry{
     }
     
     private ArrayList<Media> sortByReleaseDate(ArrayList<Media> inputList){
-        int lowestReleaseDate = inputList.get(0);
+        
         
         return inputList;
     }

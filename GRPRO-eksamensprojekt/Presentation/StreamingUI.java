@@ -7,6 +7,9 @@ public class StreamingUI{
     public static void main(String[] args){
         MediaRegistry registry = new MediaRegistryImpl();
         registry.initialize();
+        
+        MainPage mainPage = new MainPage();
+        
     }
     
     public static void testingSortMedia(){
