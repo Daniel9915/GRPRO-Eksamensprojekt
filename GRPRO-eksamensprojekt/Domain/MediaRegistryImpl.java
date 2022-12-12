@@ -65,61 +65,65 @@ public class MediaRegistryImpl implements MediaRegistry{
         
         //Sorting
         ArrayList<Media> finalList = new ArrayList<>();
-        ArrayList<Media> tempList = new ArrayList<>();
+        ArrayList<Media> typeSortedList = new ArrayList<>();
         switch(sortingType){
             case "film":
-                tempList = new ArrayList<Media>(getFilm());
+                typeSortedList = new ArrayList<Media>(getFilm());
             break;
             case "series":
-                tempList = new ArrayList<Media>(getSeries());
+                typeSortedList = new ArrayList<Media>(getSeries());
             break;
             case "favorite film":
-                tempList = new ArrayList<Media>(getFavFilm());
+                typeSortedList = new ArrayList<Media>(getFavFilm());
             break;
             case "favorite series":
-                tempList = new ArrayList<Media>(getFavSeries());
+                typeSortedList = new ArrayList<Media>(getFavSeries());
             break;
         }
         
         
         //Sort genres
-        HashSet<Media> tempSet = new HashSet<>();
+        HashSet<Media> genreSet = new HashSet<>();
+        
+        
         if(genre.size() != 0){
             for(String g: genre){
-                for(Media m: tempList){
+                for(Media m: typeSortedList){
                     mediaGenreLoop:
                     for(String mg: m.genre){
                         if(mg.equals(g)){
-                            tempSet.add(m);
+                            genreSet.add(m);
                             break mediaGenreLoop;
                         }
                     }
                 }
             }
-        }
-        ArrayList<Media> tempListTwo = new ArrayList<>();
-        if(genre.size() != 0){
-            tempListTwo = new ArrayList(tempSet);
-        }else{
-            tempListTwo = new ArrayList(tempList);
+            finalList = new ArrayList(genreSet);
         }
         
         //sort release / alphabetically
-        //if both false then none of them apply
         if(!releaseDate && !alphabetically){
-            return tempListTwo;
+            return finalList; //if both false, return without more sorting
         }
-        
-        
         if(releaseDate){
-            
+            finalList = sortByReleaseDate(finalList);
         }
-        
         if(alphabetically){
-            
+            finalList = sortAlphabetically(finalList);
         }
         
         return finalList;
+    }
+    
+    private ArrayList<Media> sortByReleaseDate(ArrayList<Media> inputList){
+        int lowestReleaseDate = inputList.get(0);
+        
+        return inputList;
+    }
+    
+    private ArrayList<Media> sortAlphabetically(ArrayList<Media> inputList){
+        
+        return inputList;
     }
 
     public ArrayList<Media> searchMedia(String sortingType){
