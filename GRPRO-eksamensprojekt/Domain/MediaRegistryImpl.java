@@ -42,6 +42,25 @@ public class MediaRegistryImpl implements MediaRegistry{
         //Billeder
     }
 
+    
+    private ArrayList<Media> getSortingType(String sortingType){
+        ArrayList<Media> typeSortedList = new ArrayList<>();
+        switch(sortingType){
+            case "film":
+                typeSortedList = new ArrayList<Media>(getFilm());
+            break;
+            case "series":
+                typeSortedList = new ArrayList<Media>(getSeries());
+            break;
+            case "favorite film":
+                typeSortedList = new ArrayList<Media>(getFavFilm());
+            break;
+            case "favorite series":
+                typeSortedList = new ArrayList<Media>(getFavSeries());
+            break;
+        }
+        return typeSortedList;
+    }
     public ArrayList<Media> sortMedia(String sortingType, ArrayList<String> genre, boolean releaseDate, boolean alphabetically){
         //Exceptions
         if(sortingType != "film" && sortingType != "series" && sortingType != "favorite film" && sortingType != "favorite series"){
@@ -65,21 +84,7 @@ public class MediaRegistryImpl implements MediaRegistry{
         
         //Sorting
         ArrayList<Media> finalList = new ArrayList<>();
-        ArrayList<Media> typeSortedList = new ArrayList<>();
-        switch(sortingType){
-            case "film":
-                typeSortedList = new ArrayList<Media>(getFilm());
-            break;
-            case "series":
-                typeSortedList = new ArrayList<Media>(getSeries());
-            break;
-            case "favorite film":
-                typeSortedList = new ArrayList<Media>(getFavFilm());
-            break;
-            case "favorite series":
-                typeSortedList = new ArrayList<Media>(getFavSeries());
-            break;
-        }
+        ArrayList<Media> typeSortedList = getSortingType(sortingType);
         
         //Sort genres
         HashSet<Media> genreSet = new HashSet<>();
@@ -195,8 +200,45 @@ public class MediaRegistryImpl implements MediaRegistry{
         return finalList;
     }
 
-    public ArrayList<Media> searchMedia(String sortingType){
-        return null;
+    public ArrayList<Media> searchMedia(String sortingType, String searchString){
+        if(sortingType != "film" && sortingType != "series" && sortingType != "favorite film" && sortingType != "favorite series"){
+            throw new NotASortingTypeException(sortingType);
+        }
+        ArrayList<Media> typeSortedList = getSortingType(sortingType);
+        ArrayList<Media> finalList = new ArrayList<>();
+        mediaLoop:
+        for(Media m: typeSortedList){
+            if(m.name.equals("The Good, The Bad And The Ugly")){
+                System.out.println();
+            }
+            int charCounter = -1;
+            charLoop:
+            for(char c: m.name.toCharArray()){
+                
+                charCounter++;
+                if(Character.toLowerCase(c) == Character.toLowerCase(searchString.charAt(0))){
+                    int searchStringIndex = 0;
+                    for(int i = charCounter; i<searchString.length()+charCounter; i++){
+                        try{
+                            if(Character.toLowerCase(m.name.charAt(i)) == Character.toLowerCase(searchString.charAt(searchStringIndex))){
+                            if(searchStringIndex == searchString.length()-1){
+                                finalList.add(m);
+                                continue mediaLoop;
+                            }
+                            searchStringIndex++;
+                            }else{
+                                continue charLoop;
+                            }
+                        }catch(StringIndexOutOfBoundsException e){
+                            continue mediaLoop;
+                        }
+                    }
+                }else{
+                    continue charLoop;
+                }
+            }
+        }
+        return finalList;
     }
 
     private List<Film> initFilm(List<String> data){

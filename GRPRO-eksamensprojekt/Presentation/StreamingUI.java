@@ -50,4 +50,15 @@ public class StreamingUI{
         }
     }
     
+    public static void testingSearch(){
+        MediaRegistry registry = new MediaRegistryImpl();
+        registry.initialize();
+        ArrayList<Media> testList = new ArrayList<>();
+        testList = registry.searchMedia("series", "sa");
+        System.out.println(testList.size());        
+        for(Media m: testList){
+            System.out.println(m.name);
+        }
+    }
+    
 }
