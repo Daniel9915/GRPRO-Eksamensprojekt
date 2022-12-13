@@ -68,10 +68,11 @@ public class MediaRegistryImpl implements MediaRegistry{
         }
         if(genre.size() != 0){
             for(String g: genre){
-                if(g != "Drama" && g != "Romance"&& g != "Crime"&& g != "History"&& g != "Fantasy"&& g != "Family"&& 
-                   g != "Adventure"&& g != "Mystery"&& g != "Thriller"&& g != "Horror"&& g != "Sci-fi"&& g != "Musical"&& 
+                String gLower = g.toLowerCase();
+                if(!gLower.equals("drama") && !gLower.equals("romance") && !gLower.equals("crime") && !gLower.equals("history") && !gLower.equals("fantasy") && !gLower.equals("family") && 
+                   !gLower.equals("adventure") && !gLower.equals("mystery") && !gLower.equals("thriller") && !gLower.equals("horror") && !gLower.equals("sci-fi") && !gLower.equals("musical") && 
                    g != "Comedy"&& g != "Biography"&& g != "War"&& g != "Action"&& g != "Western"&& g != "Film-Noir"&& 
-                   g != "Talk-show"&& g != "Documentary"&& g != "Sport"&& g != "Animation"
+                   !gLower.equals("talk-show") && !gLower.equals("documentary") && !gLower.equals("sport") && !gLower.equals("animation")
                    ){
                     throw new NotAGenreException(g);
                 }

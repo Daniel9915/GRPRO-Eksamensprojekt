@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=DomainTesting
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ testSortMediaGenres()
+comment3.params=
+comment3.target=void\ testSortMediaNotSortType()
+comment4.params=
+comment4.target=void\ testSortMediaNotGenre()
+comment5.params=
+comment5.target=void\ tearDown()
+numComments=6
