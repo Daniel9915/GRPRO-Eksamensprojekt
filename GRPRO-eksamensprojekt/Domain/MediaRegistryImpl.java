@@ -208,13 +208,9 @@ public class MediaRegistryImpl implements MediaRegistry{
         ArrayList<Media> finalList = new ArrayList<>();
         mediaLoop:
         for(Media m: typeSortedList){
-            if(m.name.equals("The Good, The Bad And The Ugly")){
-                System.out.println();
-            }
             int charCounter = -1;
             charLoop:
             for(char c: m.name.toCharArray()){
-                
                 charCounter++;
                 if(Character.toLowerCase(c) == Character.toLowerCase(searchString.charAt(0))){
                     int searchStringIndex = 0;
