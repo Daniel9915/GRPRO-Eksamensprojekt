@@ -1,13 +1,21 @@
 package Presentation;
 
+import Domain.*;//idk where but need
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
-import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainPage extends JFrame {
-    MainPage(){
+
+    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    int screenWidth = screenSize.width;
+    int screenHeight = screenSize.height;
+
+    MainPage(List<Film> startSelection){
         //Creating the frame for GUI elements to exist in
         JFrame frame = new JFrame();
 
@@ -20,7 +28,7 @@ public class MainPage extends JFrame {
 
         //Frame size and functions
         frame.setResizable(false);
-        frame.setSize(1000,1000);
+        frame.setSize(screenWidth,2000);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes application fullscreen
 
         //////////////////
@@ -32,6 +40,8 @@ public class MainPage extends JFrame {
         JPanel centerPanel = new JPanel();
         JPanel leftPanel = new JPanel();
         JPanel rightPanel = new JPanel();
+
+        
 
         topPanel.setBackground(new Color(55,55,55));
         centerPanel.setBackground(new Color(45,45,45));
@@ -48,14 +58,13 @@ public class MainPage extends JFrame {
         frame.add(leftPanel,BorderLayout.WEST);
         frame.add(rightPanel,BorderLayout.EAST);
 
-        //PANELS
+        //TOPPANELS
         JPanel topLeft = new JPanel();
         JPanel topCenter = new JPanel();
         JPanel topRight = new JPanel();
 
         topPanel.setLayout(new GridLayout(1,3));
 
-        
         //TOP LEFT
         topLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 10,100));
         JLabel logoLabel = new JLabel("");
@@ -73,7 +82,6 @@ public class MainPage extends JFrame {
 
         topCenter.setLayout(new GridLayout(2,1));
 
-        
         //TOP CENTER TOP
         JButton movieButt = new JButton("Movies");
 
@@ -86,7 +94,7 @@ public class MainPage extends JFrame {
         serieButt.setBackground(new Color(50,50,50));
         serieButt.setForeground(Color.red);
         serieButt.setFocusable(false);
-        
+
         JButton favoriteButt = new JButton("Favorites");
         favoriteButt.setBackground(new Color(50,50,50));
         favoriteButt.setForeground(Color.red);
@@ -99,7 +107,7 @@ public class MainPage extends JFrame {
 
         //TOP CENTER BOTTOM
         String[] genres = {"Sort by", "Drama", "Romance", "Crime", "History", "Fantasy", "Family", "Adventure", "Mystery", "Thriller", "Horror", "Sci-fi", "Musical", "Comedy", "Biography", "War", "Action", "Western", "Film-Noir", "Talk-show", "Documentary", "Sport", "Animation"};
-        
+
         //combobox
         JComboBox genreBox = new JComboBox(genres);
         genreBox.setFocusable(false);
@@ -112,32 +120,74 @@ public class MainPage extends JFrame {
         JCheckBox alphaCheck = new JCheckBox("Alphabetical");
         alphaCheck.setFocusable(false);
 
-
         topCenterBot.add(genreBox);
         topCenterBot.add(releaseCheck);
         topCenterBot.add(alphaCheck);
         topCenter.add(topCenterBot);
 
         //TOP RIGHT
-        
+
         JTextField searchBar = new JTextField();
         searchBar.setColumns(20);
-        
+
         JLabel searchText = new JLabel("Search");
-        
-        
+
         topRight.add(searchText);
         topRight.add(searchBar);
-        
-        
-        
-        
+
         //Finishing touches hoho
         topPanel.add(topLeft);
         topPanel.add(topCenter);
         topPanel.add(topRight);
 
         
+        
+        //Center
+        //centerPanel.setLayout(new GridLayout(startSelection.size() / 8, 8));//might cause problem
+
+        
+        JPanel scrollPanel = new JPanel();
+        scrollPanel.setLayout(new GridLayout(14, 8));//might cause problem but hey
+        
+        JScrollPane scrollPane = new JScrollPane(scrollPanel);
+        scrollPane.setPreferredSize(new Dimension(screenWidth-400, screenHeight));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+
+        centerPanel.add(scrollPane);
+        
+        for(Film f : startSelection){
+            JPanel full = new JPanel();
+            full.setLayout(new BorderLayout());
+            
+            
+            
+            ImageIcon imgIcon = new ImageIcon("MovieData"+File.separator+"filmplakater"+File.separator+f.imgPath);
+            JButton img = new JButton(imgIcon);
+            img.setHorizontalAlignment(JLabel.CENTER);
+            img.setOpaque(false);
+            img.setContentAreaFilled(false);
+            img.setBorderPainted(false);
+            
+            full.add(img, BorderLayout.NORTH);
+            
+            JLabel text = new JLabel(f.name);
+            text.setPreferredSize(new Dimension(10, 15));
+
+            text.setHorizontalAlignment(JLabel.CENTER);
+            full.add(text, BorderLayout.SOUTH);
+            
+            scrollPanel.add(full);
+
+        }
+        
+        
+        /*JLabel imgTest = new JLabel("");
+        ImageIcon imgIcon = new ImageIcon("MovieData"+File.separator+"filmplakater"+File.separator+"12 Angry Men.jpg");
+        imgTest.setIcon(imgIcon);
+        scrollPanel.add(imgTest);*/
+
+        
+        frame.pack();
         frame.setVisible(true);
 
         //Title and logo
@@ -157,12 +207,8 @@ public class MainPage extends JFrame {
         //String[][] movies = {}
         //JComboBox comboBox = new JComboBox();
 
-        
         //JButtons used to display all the media
-
     }
 
-
-    
     
 }
