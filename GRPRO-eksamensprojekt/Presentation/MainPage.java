@@ -19,6 +19,8 @@ public class MainPage extends JFrame {
         //Creating the frame for GUI elements to exist in
         JFrame frame = new JFrame();
 
+        
+        
         //Cosmetics
         frame.setTitle("Netflix 2.0");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,8 +29,9 @@ public class MainPage extends JFrame {
         frame.getContentPane().setBackground(new Color(50,50,50)); //0xFFFFFF for hexcolor code
 
         //Frame size and functions
+        
+        frame.setPreferredSize(new Dimension(screenWidth+15, screenHeight+15));
         frame.setResizable(false);
-        frame.setSize(screenWidth,2000);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes application fullscreen
 
         //////////////////
