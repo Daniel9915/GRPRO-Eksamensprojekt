@@ -88,18 +88,18 @@ public class DomainTesting{
         genres.add("Drama");
         try{
             ArrayList<Media> sortedMedia = registry.sortMedia("filmm", genres, false, true);
+            fail("No exception, expected NotASortingTypeException");
         }catch(NotASortingTypeException e){
             assertNotNull(e);
         }catch(Exception e){
             fail("Wrong exception: '" + e + "', expected NotASortingTypeException.");
         }
-        
     }
     
     @Test
     public void testSortMediaNotGenre(){
         ArrayList<String> genres = new ArrayList<>();
-        genres.add("romannnnce");
+        genres.add("romannce");
         try{
             ArrayList<Media> sortedMedia = registry.sortMedia("film", genres, false, true);
             fail("No exception, expected NotAGenreException");
@@ -113,28 +113,5 @@ public class DomainTesting{
     @AfterEach
     public void tearDown(){
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }
