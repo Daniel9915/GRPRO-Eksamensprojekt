@@ -15,9 +15,10 @@ public class MainPage extends JFrame {
     Color textColor = Color.WHITE;
     Color bgColor = new Color(50,50,50);
     boolean release = false;
-    boolean alpha = true;
+    boolean alpha = false;
 
     String currentMediaType = "film";
+    ArrayList<String> selectedGenreList = new ArrayList<String>();
 
     MainPage(MediaRegistry registry){
         //Creating the frame for GUI elements to exist in
@@ -62,15 +63,13 @@ public class MainPage extends JFrame {
         frame.add(rightPanel,BorderLayout.EAST);
 
         //CENTER
-        
+
         //clearDisplay(panel);
         //panel.getParent().removeAll();
 
         JPanel scrollPanel = new JPanel();
         scrollPanel.setBackground(bgColor);
         scrollPanel.setLayout(new GridLayout(14,8));//might cause problem but hey
-        
-        
 
         JScrollPane scrollPane = new JScrollPane(scrollPanel);
         scrollPane.setPreferredSize(new Dimension(screenWidth-400, screenHeight-200));
@@ -79,22 +78,19 @@ public class MainPage extends JFrame {
         scrollPane.setBorder(null);
 
         centerPanel.add(scrollPane);
-        fillDisplay(registry.getFilm(), scrollPanel);
-        
+        fillDisplay(registry.getFilm(), scrollPanel, registry);
+
         //
-        
+
         //JPanel scrollPanel = createScrollPanel(centerPanel);
-        
+
         //JPanel scrollPanelStep = new JPanel();
         //scrollPanelStep.setLayout(new GridLayout(14,8));
         //scrollPanelStep.setPreferredSize(new Dimension(screenWidth-400, screenHeight));
-        
+
         //fillDisplay(registry.getFilm(), scrollPanel);
-        
+
         //scrollPanel.add(scrollPanelStep);
-        
-        
-        
 
         //TOPPANELS
         JPanel topLeft = new JPanel();
@@ -132,95 +128,134 @@ public class MainPage extends JFrame {
         movieButt.setBackground(bgColor);
         movieButt.setForeground(textColor);
         movieButt.setFocusable(false);
-        movieButt.addActionListener(e -> {
-                if(currentMediaType!="film"){
-                    fillDisplay(registry.getFilm(), scrollPanel);
-                    currentMediaType = "film";
-                }
-            });
+        
 
         JButton serieButt = new JButton("Series");
         serieButt.setPreferredSize(new Dimension(75,50));
         serieButt.setBackground(new Color(50,50,50));
         serieButt.setForeground(textColor);
         serieButt.setFocusable(false);
-        serieButt.addActionListener(e -> {
-                if(currentMediaType!="series"){
-                    fillDisplay(registry.getSeries(), scrollPanel);
-                    currentMediaType = "series";
-                }
-            });
-
+        
         JButton favoriteButt = new JButton("Favorites");
         favoriteButt.setPreferredSize(new Dimension(100,50));
         favoriteButt.setBackground(new Color(50,50,50));
         favoriteButt.setForeground(textColor);
         favoriteButt.setFocusable(false);
-        favoriteButt.addActionListener(e -> {
-                if(currentMediaType=="film"){
-                    fillDisplay(registry.getFavFilm(), scrollPanel);
-                    currentMediaType = "favfilm";
-                }else if(currentMediaType=="series"){
-                    fillDisplay(registry.getFavSeries(), scrollPanel);
-                    currentMediaType = "favseries";
-                }
-            });
+        
 
-        topCenterTop.add(movieButt);
-        topCenterTop.add(serieButt);
-        topCenterTop.add(favoriteButt);
-        topCenter.add(topCenterTop);
+        
 
         //TOP CENTER BOTTOM
         String[] genres = {"Sort by", "Drama", "Romance", "Crime", "History", "Fantasy", "Family", "Adventure", "Mystery", "Thriller", "Horror", "Sci-fi", "Musical", "Comedy", "Biography", "War", "Action", "Western", "Film-Noir", "Talk-show", "Documentary", "Sport", "Animation"};
+        ArrayList<String> genreList = new ArrayList<String>();
+        for(String g : genres){
+            genreList.add(g);
+            genreList.remove(0);
+        }
 
-        
         //checkmarks
         JCheckBox releaseCheck = new JCheckBox("Release date");
         releaseCheck.setFocusable(false);
-        releaseCheck.addActionListener(e -> {
-            
-        });
-        
+        releaseCheck.setSelected(release);
+
         JCheckBox alphaCheck = new JCheckBox("Alphabetical");
         alphaCheck.setFocusable(false);
-        alphaCheck.addActionListener(e -> {
-            
-        });
-        
-        
+        alphaCheck.setSelected(alpha);        
+
+
         //combobox
         JComboBox genreBox = new JComboBox(genres);
         genreBox.setFocusable(false);
         genreBox.setBackground(new Color(50,50,50));
         genreBox.setForeground(Color.red);
+
+        //actionlisteners
+        
+        for(String g : genreList){
+            selectedGenreList.add(g);
+        }
         genreBox.addActionListener(e -> {
                 String selectedGenre = (String) genreBox.getSelectedItem();
-                ArrayList<String> selectedGenreList = new ArrayList<String>();
-                System.out.println(selectedGenre);
+
                 if(!selectedGenre.equals("Sort by")){
+                    selectedGenreList.clear();
                     selectedGenreList.add(selectedGenre);
-                    ArrayList<Media> sortedList = registry.sortMedia("film", selectedGenreList, false, false);
-                    
-                    int rows = 0;
-                    if(sortedList.size()%8 == 0){
-                        rows = sortedList.size()/8;
-                    }else if(sortedList.size()%8 != 0 && sortedList.size()/8 >= 3){
-                        rows = (sortedList.size()/8)+1;
-                    }else if(sortedList.size()%8 != 0 && sortedList.size()/8 < 3){
-                        rows = (sortedList.size()/8)+2;
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);//curr
+                }else{
+                    selectedGenreList.clear();
+                    for(String g : genreList){
+                        selectedGenreList.add(g);
                     }
-                    
-                    System.out.println("Rows: " + rows);
-                    scrollPanel.setLayout(new GridLayout(rows,8));
-                    
-                    fillDisplay(sortedList, scrollPanel);
-                    //System.out.println(sortedList);
+
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);//curr
                 }
             });
 
-        
+        releaseCheck.addActionListener(e -> {
+                if(releaseCheck.isSelected()){
+                    alpha=false;
+                    release=true;
+                    alphaCheck.setSelected(false);
 
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                    System.out.println("Release on");
+                    System.out.println(selectedGenreList);
+                }else{
+                    release=false;
+
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                    System.out.println("Release off");
+                }
+            });
+
+        alphaCheck.addActionListener(e -> {
+                if(alphaCheck.isSelected()){
+                    alpha=true;
+                    release=false;
+                    releaseCheck.setSelected(false);
+
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                    System.out.println("Alpha off");
+                    System.out.println(selectedGenreList);
+                }else{
+                    alpha=false;
+
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                    System.out.println("Alpha on");
+                }
+            });
+            
+            movieButt.addActionListener(e -> {
+                if(currentMediaType!="film"){
+                    currentMediaType = "film";
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                }
+            });
+            
+            serieButt.addActionListener(e -> {
+                if(currentMediaType!="series"){
+                    currentMediaType = "series";
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                }
+            });
+            
+            favoriteButt.addActionListener(e -> {
+                if(currentMediaType=="film"){
+                    currentMediaType = "favorite film";
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                }else if(currentMediaType=="series"){
+                    currentMediaType = "favorite series";
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                }
+            });
+
+
+        topCenterTop.add(movieButt);
+        topCenterTop.add(serieButt);
+        topCenterTop.add(favoriteButt);
+        topCenter.add(topCenterTop);
+            
+            
         topCenterBot.add(genreBox);
         topCenterBot.add(releaseCheck);
         topCenterBot.add(alphaCheck);
@@ -255,7 +290,45 @@ public class MainPage extends JFrame {
         //JButtons used to display all the media
     }
 
-    private void fillDisplay(List<Media> displayList, JPanel displayPanel){
+    private void sortAndFill(String type, ArrayList<String> selectedGenreList, boolean release, boolean alpha, MediaRegistry registry, JPanel panel){
+        //if(!selectedGenreList.get(0).equals("Sort by")){
+            //ArrayList<String> selectedGenreList = new ArrayList<>();
+            //selectedGenreList.add(selectedGenre);
+            ArrayList<Media> sortedList = registry.sortMedia(type, selectedGenreList, release, alpha);
+
+            int rows = 0;
+            if(sortedList.size()%8 == 0){
+                rows = sortedList.size()/8;
+            }else if(sortedList.size()%8 != 0 && sortedList.size()/8 >= 3){
+                rows = (sortedList.size()/8)+1;
+            }else if(sortedList.size()%8 != 0 && sortedList.size()/8 < 3){
+                rows = (sortedList.size()/8)+2;
+            }
+
+            panel.setLayout(new GridLayout(rows,8));
+
+            fillDisplay(sortedList, panel, registry);
+        /*}else{
+        //ArrayList<String> selectedGenreList = new ArrayList<>();
+        //selectedGenreList.add(selectedGenre);
+        ArrayList<Media> sortedList = registry.sortMedia(type, selectedGenreList, release, alpha);
+
+        int rows = 0;
+        if(sortedList.size()%8 == 0){
+        rows = sortedList.size()/8;
+        }else if(sortedList.size()%8 != 0 && sortedList.size()/8 >= 3){
+        rows = (sortedList.size()/8)+1;
+        }else if(sortedList.size()%8 != 0 && sortedList.size()/8 < 3){
+        rows = (sortedList.size()/8)+2;
+        }
+
+        panel.setLayout(new GridLayout(rows,8));
+
+        fillDisplay(sortedList, panel);
+        }*/
+    }
+
+    private void fillDisplay(List<Media> displayList, JPanel displayPanel, MediaRegistry registry){
         clearDisplay(displayPanel);
         //System.out.println(displayPanel.getParent());
         for(Media m : displayList){
@@ -278,13 +351,13 @@ public class MainPage extends JFrame {
 
                     displayPanel.setLayout(new BorderLayout());
 
-                    makeMediaEntry(m, displayPanel, displayList);
+                    makeMediaEntry(m, displayPanel, displayList, registry);
                     //fillDisplay(displayList, displayPanel);
                     //fillDisplay(new ArrayList<Media>(){{add(displayList.get(1)); add(displayList.get(0));}},displayPanel);
                 });
 
             display.add(img, BorderLayout.NORTH);
-            
+
             JLabel text = new JLabel(m.name);
             text.setForeground(textColor);
             text.setPreferredSize(new Dimension(10, 15));
@@ -297,12 +370,12 @@ public class MainPage extends JFrame {
 
         }
         if(displayList.size()%8 != 0){
-            System.out.println("total size: " + displayList.size());
-            System.out.println("size % 8 = " + displayList.size()%8);
+            //System.out.println("total size: " + displayList.size());
+            //System.out.println("size % 8 = " + displayList.size()%8);
             for(int i = 0; i < 8-(displayList.size()%8); i++){
                 displayPanel.add(new JLabel(""));
-                System.out.println(i+1 + ". label");
-                
+                //System.out.println(i+1 + ". label");
+
             }
         }
         if(displayList.size()/8 < 3){
@@ -313,25 +386,25 @@ public class MainPage extends JFrame {
     }
 
     /*private JPanel createScrollPanel(JPanel panel){
-        //clearDisplay(panel);
-        //panel.getParent().removeAll();
+    //clearDisplay(panel);
+    //panel.getParent().removeAll();
 
-        JPanel scrollPanel = new JPanel();
-        scrollPanel.setBackground(bgColor);
-        scrollPanel.setLayout(new GridLayout(14,8));//might cause problem but hey
+    JPanel scrollPanel = new JPanel();
+    scrollPanel.setBackground(bgColor);
+    scrollPanel.setLayout(new GridLayout(14,8));//might cause problem but hey
 
-        JScrollPane scrollPane = new JScrollPane(scrollPanel);
-        scrollPane.setPreferredSize(new Dimension(screenWidth-400, screenHeight-200));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setBorder(null);
+    JScrollPane scrollPane = new JScrollPane(scrollPanel);
+    scrollPane.setPreferredSize(new Dimension(screenWidth-400, screenHeight-200));
+    scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    scrollPane.setBorder(null);
 
-        panel.add(scrollPane);
+    panel.add(scrollPane);
 
-        return scrollPanel;
+    return scrollPanel;
     }*/
 
-    private void makeMediaEntry(Media media, JPanel panel, List<Media> currentList){
+    private void makeMediaEntry(Media media, JPanel panel, List<Media> currentList, MediaRegistry registry){//might need scroll
         JPanel top = new JPanel();
         JPanel center = new JPanel();
         JPanel bot = new JPanel();
@@ -339,14 +412,12 @@ public class MainPage extends JFrame {
         top.setPreferredSize(new Dimension(200,50));
         center.setPreferredSize(new Dimension(200,200));
         bot.setPreferredSize(new Dimension(200,200));
-        
+
         top.setBackground(bgColor);
         center.setBackground(bgColor);
         bot.setBackground(bgColor);
-        
-        
-        top.setLayout(new GridLayout(1, 3));
 
+        top.setLayout(new GridLayout(1, 3));
         //create name label
         JLabel nameLabel = new JLabel(media.name);
         nameLabel.setFont(new Font("Arial", Font.PLAIN, 28));
@@ -366,10 +437,11 @@ public class MainPage extends JFrame {
 
                 //JPanel scrollPanel = createScrollPanel(panel);//old
                 panel.setLayout(new GridLayout(14,8));
+
+                sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, panel);//maybe scroll
                 
-                fillDisplay(currentList, panel);
-                
-                
+                //fillDisplay(currentList, panel);
+
                 //fillDisplay(currentList, panel);
                 //clearDisplay(panel);
                 //fillDisplay(startSelection, panel);

@@ -149,7 +149,7 @@ public class MediaRegistryImpl implements MediaRegistry{
         
         for(Media m: inputList){
             char firstChar = m.name.charAt(0);
-            System.out.println(firstChar);
+            //System.out.println(firstChar);
             if(Character.isLetter(firstChar)){
                 letterList.add(m);
             }else if(Character.isDigit(firstChar)){
@@ -160,7 +160,7 @@ public class MediaRegistryImpl implements MediaRegistry{
         }
         
         //Sort the numbers
-        System.out.println(numberList.size());
+        //System.out.println(numberList.size());
         int lowestNumber;
         while(numberList.size() > 0){
             lowestNumber = Integer.parseInt(Character.toString(numberList.get(0).name.charAt(0)));
