@@ -8,6 +8,6 @@ public class StreamingUI{
         MediaRegistry registry = new MediaRegistryImpl();
         registry.initialize();
         
-        MainPage mainPage = new MainPage(registry.getFilm());
+        MainPage mainPage = new MainPage(registry);
     }   
 }

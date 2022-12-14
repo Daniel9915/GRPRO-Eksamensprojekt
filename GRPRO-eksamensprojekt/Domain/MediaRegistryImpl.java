@@ -94,7 +94,7 @@ public class MediaRegistryImpl implements MediaRegistry{
                 for(Media m: typeSortedList){
                     mediaGenreLoop:
                     for(String mg: m.genre){
-                        if(mg.equals(g)){
+                        if(mg.toLowerCase().equals(g.toLowerCase())){
                             genreSet.add(m);
                             break mediaGenreLoop;
                         }

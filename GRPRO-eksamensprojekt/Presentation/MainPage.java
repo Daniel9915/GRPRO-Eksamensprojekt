@@ -8,27 +8,30 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MainPage extends JFrame {
-
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     int screenWidth = screenSize.width;
     int screenHeight = screenSize.height;
+    Color textColor = Color.WHITE;
+    Color bgColor = new Color(50,50,50);
+    boolean release = false;
+    boolean alpha = true;
 
-    MainPage(List<Media> startSelection){
+    String currentMediaType = "film";
+
+    MainPage(MediaRegistry registry){
         //Creating the frame for GUI elements to exist in
         JFrame frame = new JFrame();
-        
-        
+
         //Cosmetics
         frame.setTitle("Netflix 2.0");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ImageIcon image = new ImageIcon("something.png");
         frame.setIconImage(image.getImage());
-        frame.getContentPane().setBackground(new Color(50,50,50)); //0xFFFFFF for hexcolor code
+        frame.getContentPane().setBackground(bgColor); //0xFFFFFF for hexcolor code
 
         //Frame size and functions
-        
+
         frame.setPreferredSize(new Dimension(screenWidth+15, screenHeight+15));
         frame.setResizable(false);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); //Makes application fullscreen
@@ -43,11 +46,10 @@ public class MainPage extends JFrame {
         JPanel leftPanel = new JPanel();
         JPanel rightPanel = new JPanel();
 
-
-        topPanel.setBackground(new Color(55,55,55));
-        centerPanel.setBackground(new Color(45,45,45));
-        leftPanel.setBackground(new Color(65,65,65));
-        rightPanel.setBackground(new Color(40,40,40));
+        topPanel.setBackground(bgColor);
+        centerPanel.setBackground(bgColor);
+        leftPanel.setBackground(bgColor);
+        rightPanel.setBackground(bgColor);
 
         topPanel.setPreferredSize(new Dimension(200,150));
         centerPanel.setPreferredSize(new Dimension(200,200));
@@ -59,12 +61,51 @@ public class MainPage extends JFrame {
         frame.add(leftPanel,BorderLayout.WEST);
         frame.add(rightPanel,BorderLayout.EAST);
 
+        //CENTER
+        
+        //clearDisplay(panel);
+        //panel.getParent().removeAll();
+
+        JPanel scrollPanel = new JPanel();
+        scrollPanel.setBackground(bgColor);
+        scrollPanel.setLayout(new GridLayout(14,8));//might cause problem but hey
+        
+        
+
+        JScrollPane scrollPane = new JScrollPane(scrollPanel);
+        scrollPane.setPreferredSize(new Dimension(screenWidth-400, screenHeight-200));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBorder(null);
+
+        centerPanel.add(scrollPane);
+        fillDisplay(registry.getFilm(), scrollPanel);
+        
+        //
+        
+        //JPanel scrollPanel = createScrollPanel(centerPanel);
+        
+        //JPanel scrollPanelStep = new JPanel();
+        //scrollPanelStep.setLayout(new GridLayout(14,8));
+        //scrollPanelStep.setPreferredSize(new Dimension(screenWidth-400, screenHeight));
+        
+        //fillDisplay(registry.getFilm(), scrollPanel);
+        
+        //scrollPanel.add(scrollPanelStep);
+        
+        
+        
+
         //TOPPANELS
         JPanel topLeft = new JPanel();
         JPanel topCenter = new JPanel();
         JPanel topRight = new JPanel();
 
         topPanel.setLayout(new GridLayout(1,3));
+
+        topLeft.setBackground(bgColor);
+        topCenter.setBackground(bgColor);
+        topRight.setBackground(bgColor);
 
         //TOP LEFT
         topLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 10,40));
@@ -77,29 +118,53 @@ public class MainPage extends JFrame {
 
         JPanel topCenterTop = new JPanel();
         topCenterTop.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        topCenterTop.setBackground(bgColor);
 
         JPanel topCenterBot = new JPanel();
         topCenterBot.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        topCenterBot.setBackground(bgColor);
 
         topCenter.setLayout(new GridLayout(2,1));
 
         //TOP CENTER TOP
         JButton movieButt = new JButton("Movies");
-
         movieButt.setPreferredSize(new Dimension(75,50));
-        movieButt.setBackground(new Color(50,50,50));
-        movieButt.setForeground(Color.red);
+        movieButt.setBackground(bgColor);
+        movieButt.setForeground(textColor);
         movieButt.setFocusable(false);
+        movieButt.addActionListener(e -> {
+                if(currentMediaType!="film"){
+                    fillDisplay(registry.getFilm(), scrollPanel);
+                    currentMediaType = "film";
+                }
+            });
 
         JButton serieButt = new JButton("Series");
+        serieButt.setPreferredSize(new Dimension(75,50));
         serieButt.setBackground(new Color(50,50,50));
-        serieButt.setForeground(Color.red);
+        serieButt.setForeground(textColor);
         serieButt.setFocusable(false);
+        serieButt.addActionListener(e -> {
+                if(currentMediaType!="series"){
+                    fillDisplay(registry.getSeries(), scrollPanel);
+                    currentMediaType = "series";
+                }
+            });
 
         JButton favoriteButt = new JButton("Favorites");
+        favoriteButt.setPreferredSize(new Dimension(100,50));
         favoriteButt.setBackground(new Color(50,50,50));
-        favoriteButt.setForeground(Color.red);
+        favoriteButt.setForeground(textColor);
         favoriteButt.setFocusable(false);
+        favoriteButt.addActionListener(e -> {
+                if(currentMediaType=="film"){
+                    fillDisplay(registry.getFavFilm(), scrollPanel);
+                    currentMediaType = "favfilm";
+                }else if(currentMediaType=="series"){
+                    fillDisplay(registry.getFavSeries(), scrollPanel);
+                    currentMediaType = "favseries";
+                }
+            });
 
         topCenterTop.add(movieButt);
         topCenterTop.add(serieButt);
@@ -109,17 +174,52 @@ public class MainPage extends JFrame {
         //TOP CENTER BOTTOM
         String[] genres = {"Sort by", "Drama", "Romance", "Crime", "History", "Fantasy", "Family", "Adventure", "Mystery", "Thriller", "Horror", "Sci-fi", "Musical", "Comedy", "Biography", "War", "Action", "Western", "Film-Noir", "Talk-show", "Documentary", "Sport", "Animation"};
 
+        
+        //checkmarks
+        JCheckBox releaseCheck = new JCheckBox("Release date");
+        releaseCheck.setFocusable(false);
+        releaseCheck.addActionListener(e -> {
+            
+        });
+        
+        JCheckBox alphaCheck = new JCheckBox("Alphabetical");
+        alphaCheck.setFocusable(false);
+        alphaCheck.addActionListener(e -> {
+            
+        });
+        
+        
         //combobox
         JComboBox genreBox = new JComboBox(genres);
         genreBox.setFocusable(false);
         genreBox.setBackground(new Color(50,50,50));
         genreBox.setForeground(Color.red);
+        genreBox.addActionListener(e -> {
+                String selectedGenre = (String) genreBox.getSelectedItem();
+                ArrayList<String> selectedGenreList = new ArrayList<String>();
+                System.out.println(selectedGenre);
+                if(!selectedGenre.equals("Sort by")){
+                    selectedGenreList.add(selectedGenre);
+                    ArrayList<Media> sortedList = registry.sortMedia("film", selectedGenreList, false, false);
+                    
+                    int rows = 0;
+                    if(sortedList.size()%8 == 0){
+                        rows = sortedList.size()/8;
+                    }else if(sortedList.size()%8 != 0 && sortedList.size()/8 >= 3){
+                        rows = (sortedList.size()/8)+1;
+                    }else if(sortedList.size()%8 != 0 && sortedList.size()/8 < 3){
+                        rows = (sortedList.size()/8)+2;
+                    }
+                    
+                    System.out.println("Rows: " + rows);
+                    scrollPanel.setLayout(new GridLayout(rows,8));
+                    
+                    fillDisplay(sortedList, scrollPanel);
+                    //System.out.println(sortedList);
+                }
+            });
 
-        //checkmarks
-        JCheckBox releaseCheck = new JCheckBox("Release date");
-        releaseCheck.setFocusable(false);
-        JCheckBox alphaCheck = new JCheckBox("Alphabetical");
-        alphaCheck.setFocusable(false);
+        
 
         topCenterBot.add(genreBox);
         topCenterBot.add(releaseCheck);
@@ -141,15 +241,10 @@ public class MainPage extends JFrame {
         topPanel.add(topCenter);
         topPanel.add(topRight);
 
-        
-        
         //Center
-        
-        JPanel scrollPanel = createScrollPanel(centerPanel, 14, 8);
-        
-        fillDisplay(startSelection, scrollPanel);
-        
-        
+        //JPanel test = new JPanel();
+        //centerPanel.add(test);
+
         frame.pack();
         frame.setVisible(true);
 
@@ -159,104 +254,166 @@ public class MainPage extends JFrame {
 
         //JButtons used to display all the media
     }
-    
+
     private void fillDisplay(List<Media> displayList, JPanel displayPanel){
         clearDisplay(displayPanel);
+        //System.out.println(displayPanel.getParent());
         for(Media m : displayList){
             JPanel display = new JPanel();
+            display.setBackground(bgColor);
             display.setLayout(new BorderLayout());//to put text under img
-            
-            ImageIcon imgIcon = new ImageIcon("MovieData"+File.separator+"filmplakater"+File.separator+m.imgPath);
+            ImageIcon imgIcon = new ImageIcon("notfound");
+            if(m instanceof Film){
+                imgIcon = new ImageIcon("MovieData"+File.separator+"filmplakater"+File.separator+m.imgPath);    
+            }else{
+                imgIcon = new ImageIcon("MovieData"+File.separator+"serieforsider"+File.separator+m.imgPath);    
+            }
+
             JButton img = new JButton(imgIcon);
             img.setHorizontalAlignment(JLabel.CENTER);
             img.setContentAreaFilled(false);
             img.setBorderPainted(false);
             img.addActionListener(e -> {
-                clearDisplay(displayPanel);
-                
-                
-                displayPanel.setLayout(new BorderLayout());
-                
-                makeMediaEntry(m, displayPanel);
-                //fillDisplay(displayList, displayPanel);
-                //fillDisplay(new ArrayList<Media>(){{add(displayList.get(1)); add(displayList.get(0));}},displayPanel);
-            });
-            
-            
+                    clearDisplay(displayPanel);
+
+                    displayPanel.setLayout(new BorderLayout());
+
+                    makeMediaEntry(m, displayPanel, displayList);
+                    //fillDisplay(displayList, displayPanel);
+                    //fillDisplay(new ArrayList<Media>(){{add(displayList.get(1)); add(displayList.get(0));}},displayPanel);
+                });
+
             display.add(img, BorderLayout.NORTH);
             
             JLabel text = new JLabel(m.name);
+            text.setForeground(textColor);
             text.setPreferredSize(new Dimension(10, 15));
             text.setHorizontalAlignment(JLabel.CENTER);
-            
-            display.add(text, BorderLayout.SOUTH);
-            
+            text.setVerticalAlignment(JLabel.TOP);
+
+            display.add(text, BorderLayout.CENTER);
+
             displayPanel.add(display);
 
         }
+        if(displayList.size()%8 != 0){
+            System.out.println("total size: " + displayList.size());
+            System.out.println("size % 8 = " + displayList.size()%8);
+            for(int i = 0; i < 8-(displayList.size()%8); i++){
+                displayPanel.add(new JLabel(""));
+                System.out.println(i+1 + ". label");
+                
+            }
+        }
+        if(displayList.size()/8 < 3){
+            for(int i = 0; i < 8; i++){
+                displayPanel.add(new JLabel(""));
+            }
+        }
     }
-    
-    private JPanel createScrollPanel(JPanel panel, int columns, int rows){
+
+    /*private JPanel createScrollPanel(JPanel panel){
+        //clearDisplay(panel);
+        //panel.getParent().removeAll();
+
         JPanel scrollPanel = new JPanel();
-        scrollPanel.setLayout(new GridLayout(columns, rows));//might cause problem but hey
-        
+        scrollPanel.setBackground(bgColor);
+        scrollPanel.setLayout(new GridLayout(14,8));//might cause problem but hey
+
         JScrollPane scrollPane = new JScrollPane(scrollPanel);
-        scrollPane.setPreferredSize(new Dimension(screenWidth-400, screenHeight));
+        scrollPane.setPreferredSize(new Dimension(screenWidth-400, screenHeight-200));
         scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBorder(null);
 
         panel.add(scrollPane);
-        
+
         return scrollPanel;
-    }
-    
-    private void makeMediaEntry(Media media, JPanel panel){
+    }*/
+
+    private void makeMediaEntry(Media media, JPanel panel, List<Media> currentList){
         JPanel top = new JPanel();
         JPanel center = new JPanel();
         JPanel bot = new JPanel();
-        
+
         top.setPreferredSize(new Dimension(200,50));
         center.setPreferredSize(new Dimension(200,200));
         bot.setPreferredSize(new Dimension(200,200));
+        
+        top.setBackground(bgColor);
+        center.setBackground(bgColor);
+        bot.setBackground(bgColor);
+        
+        
+        top.setLayout(new GridLayout(1, 3));
 
-        //add name to top
+        //create name label
         JLabel nameLabel = new JLabel(media.name);
         nameLabel.setFont(new Font("Arial", Font.PLAIN, 28));
-        
+        nameLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        //create back button
+        JButton backButt = new JButton("Back");
+        backButt.setFont(new Font("Arial", Font.PLAIN, 28));
+        backButt.setPreferredSize(new Dimension(100,40));
+        backButt.setHorizontalAlignment(JLabel.LEFT);
+        backButt.setBackground(new Color(50,50,50));
+        backButt.setForeground(Color.red);
+        backButt.setFocusable(false);
+
+        backButt.addActionListener(e -> {
+                //clearDisplay(panel);
+
+                //JPanel scrollPanel = createScrollPanel(panel);//old
+                panel.setLayout(new GridLayout(14,8));
+                
+                fillDisplay(currentList, panel);
+                
+                
+                //fillDisplay(currentList, panel);
+                //clearDisplay(panel);
+                //fillDisplay(startSelection, panel);
+            });
+
+        //create flowpanel for aligning button
+        JPanel flowPanel = new JPanel();
+        flowPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        flowPanel.add(backButt);
+        flowPanel.setBackground(bgColor);
+
         //add fake player clickable
         ImageIcon imgIcon = new ImageIcon("MovieData"+File.separator+"netflixDisplay14.png");
         JButton img = new JButton(imgIcon);
         img.setHorizontalAlignment(JLabel.CENTER);
         img.setContentAreaFilled(false);
         img.setBorderPainted(false);
-        
-        
-        
-        
+
         //add media details
         JLabel details = new JLabel("Genre: " + media.genre, SwingConstants.LEFT);//continue here
         JLabel details2 = new JLabel("Release year: " + media.startYear);
-        details2.setPreferredSize(new Dimension(1000, 15));
+        details2.setPreferredSize(new Dimension(500, 15));
         details2.setAlignmentX(0.0f);
         details2.setHorizontalAlignment(SwingConstants.LEFT);
-        
-        
-        top.add(nameLabel);
-        center.add(img);
-        center.add(details);
-        center.add(details2);
-        
-        
 
+        //add to panels
+        top.add(flowPanel);
+        top.add(nameLabel);
+        top.add(new JLabel(""));
+
+        center.add(img);
+        bot.add(details);
+        bot.add(details2);
+
+        //add to origin panel
         panel.add(top,BorderLayout.NORTH);
         panel.add(center,BorderLayout.CENTER);
         panel.add(bot, BorderLayout.SOUTH);
     }
-    
+
     private void clearDisplay(JPanel display){
         display.removeAll();
         display.revalidate();
         display.repaint();
     }
 
-    
 }
