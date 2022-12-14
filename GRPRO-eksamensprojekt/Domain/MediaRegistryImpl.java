@@ -363,20 +363,20 @@ public class MediaRegistryImpl implements MediaRegistry{
         return returnString;
     }
 
-        public ArrayList<Film> getFilm(){
-        return new ArrayList<Film>(filmList);
+    public ArrayList<Media> getFilm(){
+        return new ArrayList<Media>(filmList);
     }
 
-    public ArrayList<Series> getSeries(){
-        return new ArrayList<Series>(seriesList);
+    public ArrayList<Media> getSeries(){
+        return new ArrayList<Media>(seriesList);
     }
 
-    public ArrayList<Film> getFavFilm(){
-        return new ArrayList<Film>(favFilmList);
+    public ArrayList<Media> getFavFilm(){
+        return new ArrayList<Media>(favFilmList);
     }
 
-    public ArrayList<Series> getFavSeries(){
-        return new ArrayList<Series>(favSeriesList);
+    public ArrayList<Media> getFavSeries(){
+        return new ArrayList<Media>(favSeriesList);
     }
 
 

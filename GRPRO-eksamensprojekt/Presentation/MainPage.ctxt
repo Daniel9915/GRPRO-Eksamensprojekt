@@ -2,4 +2,12 @@
 comment0.target=MainPage
 comment1.params=startSelection
 comment1.target=MainPage(java.util.List)
-numComments=2
+comment2.params=displayList\ displayPanel
+comment2.target=void\ fillDisplay(java.util.List,\ javax.swing.JPanel)
+comment3.params=panel\ columns\ rows
+comment3.target=javax.swing.JPanel\ createScrollPanel(javax.swing.JPanel,\ int,\ int)
+comment4.params=media\ panel
+comment4.target=void\ makeMediaEntry(Domain.Media,\ javax.swing.JPanel)
+comment5.params=display
+comment5.target=void\ clearDisplay(javax.swing.JPanel)
+numComments=6

@@ -15,10 +15,9 @@ public class MainPage extends JFrame {
     int screenWidth = screenSize.width;
     int screenHeight = screenSize.height;
 
-    MainPage(List<Film> startSelection){
+    MainPage(List<Media> startSelection){
         //Creating the frame for GUI elements to exist in
         JFrame frame = new JFrame();
-
         
         
         //Cosmetics
@@ -44,14 +43,13 @@ public class MainPage extends JFrame {
         JPanel leftPanel = new JPanel();
         JPanel rightPanel = new JPanel();
 
-        
 
         topPanel.setBackground(new Color(55,55,55));
         centerPanel.setBackground(new Color(45,45,45));
         leftPanel.setBackground(new Color(65,65,65));
         rightPanel.setBackground(new Color(40,40,40));
 
-        topPanel.setPreferredSize(new Dimension(200,200));
+        topPanel.setPreferredSize(new Dimension(200,150));
         centerPanel.setPreferredSize(new Dimension(200,200));
         leftPanel.setPreferredSize(new Dimension(200,200));
         rightPanel.setPreferredSize(new Dimension(200,200));
@@ -69,7 +67,7 @@ public class MainPage extends JFrame {
         topPanel.setLayout(new GridLayout(1,3));
 
         //TOP LEFT
-        topLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 10,100));
+        topLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 10,40));
         JLabel logoLabel = new JLabel("");
         ImageIcon logo = new ImageIcon("NETFLIX.png");
         logoLabel.setIcon(logo);
@@ -146,71 +144,118 @@ public class MainPage extends JFrame {
         
         
         //Center
-        //centerPanel.setLayout(new GridLayout(startSelection.size() / 8, 8));//might cause problem
-
         
-        JPanel scrollPanel = new JPanel();
-        scrollPanel.setLayout(new GridLayout(14, 8));//might cause problem but hey
+        JPanel scrollPanel = createScrollPanel(centerPanel, 14, 8);
         
-        JScrollPane scrollPane = new JScrollPane(scrollPanel);
-        scrollPane.setPreferredSize(new Dimension(screenWidth-400, screenHeight));
-        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-
-        centerPanel.add(scrollPane);
+        fillDisplay(startSelection, scrollPanel);
         
-        for(Film f : startSelection){
-            JPanel full = new JPanel();
-            full.setLayout(new BorderLayout());
-            
-            
-            
-            ImageIcon imgIcon = new ImageIcon("MovieData"+File.separator+"filmplakater"+File.separator+f.imgPath);
-            JButton img = new JButton(imgIcon);
-            img.setHorizontalAlignment(JLabel.CENTER);
-            img.setOpaque(false);
-            img.setContentAreaFilled(false);
-            img.setBorderPainted(false);
-            
-            full.add(img, BorderLayout.NORTH);
-            
-            JLabel text = new JLabel(f.name);
-            text.setPreferredSize(new Dimension(10, 15));
-
-            text.setHorizontalAlignment(JLabel.CENTER);
-            full.add(text, BorderLayout.SOUTH);
-            
-            scrollPanel.add(full);
-
-        }
-        
-        
-        /*JLabel imgTest = new JLabel("");
-        ImageIcon imgIcon = new ImageIcon("MovieData"+File.separator+"filmplakater"+File.separator+"12 Angry Men.jpg");
-        imgTest.setIcon(imgIcon);
-        scrollPanel.add(imgTest);*/
-
         
         frame.pack();
         frame.setVisible(true);
-
-        //Title and logo
-        /*JLabel title = new JLabel("");
-        frame.add(title); //Required to make label visible
-
-        ImageIcon logo = new ImageIcon("NETFLIX 2.0.png");
-        title.setIcon(logo);
-        title.setForeground(Color.white);
-        title.setHorizontalTextPosition(JLabel.CENTER);
-        title.setVerticalTextPosition(JLabel.TOP);
-        title.setVerticalAlignment(JLabel.TOP);
-        title.setHorizontalAlignment(JLabel.LEFT);
-         */
 
         //Combo box/drop down list used for sorting media
         //String[][] movies = {}
         //JComboBox comboBox = new JComboBox();
 
         //JButtons used to display all the media
+    }
+    
+    private void fillDisplay(List<Media> displayList, JPanel displayPanel){
+        clearDisplay(displayPanel);
+        for(Media m : displayList){
+            JPanel display = new JPanel();
+            display.setLayout(new BorderLayout());//to put text under img
+            
+            ImageIcon imgIcon = new ImageIcon("MovieData"+File.separator+"filmplakater"+File.separator+m.imgPath);
+            JButton img = new JButton(imgIcon);
+            img.setHorizontalAlignment(JLabel.CENTER);
+            img.setContentAreaFilled(false);
+            img.setBorderPainted(false);
+            img.addActionListener(e -> {
+                clearDisplay(displayPanel);
+                
+                
+                displayPanel.setLayout(new BorderLayout());
+                
+                makeMediaEntry(m, displayPanel);
+                //fillDisplay(displayList, displayPanel);
+                //fillDisplay(new ArrayList<Media>(){{add(displayList.get(1)); add(displayList.get(0));}},displayPanel);
+            });
+            
+            
+            display.add(img, BorderLayout.NORTH);
+            
+            JLabel text = new JLabel(m.name);
+            text.setPreferredSize(new Dimension(10, 15));
+            text.setHorizontalAlignment(JLabel.CENTER);
+            
+            display.add(text, BorderLayout.SOUTH);
+            
+            displayPanel.add(display);
+
+        }
+    }
+    
+    private JPanel createScrollPanel(JPanel panel, int columns, int rows){
+        JPanel scrollPanel = new JPanel();
+        scrollPanel.setLayout(new GridLayout(columns, rows));//might cause problem but hey
+        
+        JScrollPane scrollPane = new JScrollPane(scrollPanel);
+        scrollPane.setPreferredSize(new Dimension(screenWidth-400, screenHeight));
+        scrollPane.getVerticalScrollBar().setUnitIncrement(20);
+
+        panel.add(scrollPane);
+        
+        return scrollPanel;
+    }
+    
+    private void makeMediaEntry(Media media, JPanel panel){
+        JPanel top = new JPanel();
+        JPanel center = new JPanel();
+        JPanel bot = new JPanel();
+        
+        top.setPreferredSize(new Dimension(200,50));
+        center.setPreferredSize(new Dimension(200,200));
+        bot.setPreferredSize(new Dimension(200,200));
+
+        //add name to top
+        JLabel nameLabel = new JLabel(media.name);
+        nameLabel.setFont(new Font("Arial", Font.PLAIN, 28));
+        
+        //add fake player clickable
+        ImageIcon imgIcon = new ImageIcon("MovieData"+File.separator+"netflixDisplay14.png");
+        JButton img = new JButton(imgIcon);
+        img.setHorizontalAlignment(JLabel.CENTER);
+        img.setContentAreaFilled(false);
+        img.setBorderPainted(false);
+        
+        
+        
+        
+        //add media details
+        JLabel details = new JLabel("Genre: " + media.genre, SwingConstants.LEFT);//continue here
+        JLabel details2 = new JLabel("Release year: " + media.startYear);
+        details2.setPreferredSize(new Dimension(1000, 15));
+        details2.setAlignmentX(0.0f);
+        details2.setHorizontalAlignment(SwingConstants.LEFT);
+        
+        
+        top.add(nameLabel);
+        center.add(img);
+        center.add(details);
+        center.add(details2);
+        
+        
+
+        panel.add(top,BorderLayout.NORTH);
+        panel.add(center,BorderLayout.CENTER);
+        panel.add(bot, BorderLayout.SOUTH);
+    }
+    
+    private void clearDisplay(JPanel display){
+        display.removeAll();
+        display.revalidate();
+        display.repaint();
     }
 
     

@@ -10,8 +10,8 @@ public interface MediaRegistry{
    // hvis "ArrayList<String> genre" er tom, så er det alle genres
    ArrayList<Media> sortMedia(String sortingType, ArrayList<String> genre, boolean releaseDate, boolean alphabetically); 
    ArrayList<Media> searchMedia(String sortingType, String searchString);
-   ArrayList<Film> getFilm();
-   ArrayList<Series> getSeries();
-   ArrayList<Film> getFavFilm();
-   ArrayList<Series> getFavSeries();
+   ArrayList<Media> getFilm();
+   ArrayList<Media> getSeries();
+   ArrayList<Media> getFavFilm();
+   ArrayList<Media> getFavSeries();
 }
