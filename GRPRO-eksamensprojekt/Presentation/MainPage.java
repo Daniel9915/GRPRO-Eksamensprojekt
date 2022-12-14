@@ -157,17 +157,20 @@ public class MainPage extends JFrame {
         JCheckBox releaseCheck = new JCheckBox("Release date");
         releaseCheck.setFocusable(false);
         releaseCheck.setSelected(release);
+        releaseCheck.setBackground(bgColor);
+        releaseCheck.setForeground(textColor);
 
         JCheckBox alphaCheck = new JCheckBox("Alphabetical");
         alphaCheck.setFocusable(false);
         alphaCheck.setSelected(alpha);        
-
+        alphaCheck.setBackground(bgColor);
+        alphaCheck.setForeground(textColor);
 
         //combobox
         JComboBox genreBox = new JComboBox(genres);
         genreBox.setFocusable(false);
-        genreBox.setBackground(new Color(50,50,50));
-        genreBox.setForeground(Color.red);
+        genreBox.setBackground(bgColor);
+        genreBox.setForeground(textColor);
 
         //actionlisteners
         
@@ -463,6 +466,7 @@ public class MainPage extends JFrame {
         //add media details
         JLabel details = new JLabel("Genre: " + media.genre, SwingConstants.LEFT);//continue here
         JLabel details2 = new JLabel("Release year: " + media.startYear);
+        details.setForeground(textColor);
         details2.setPreferredSize(new Dimension(500, 15));
         details2.setAlignmentX(0.0f);
         details2.setHorizontalAlignment(SwingConstants.LEFT);
