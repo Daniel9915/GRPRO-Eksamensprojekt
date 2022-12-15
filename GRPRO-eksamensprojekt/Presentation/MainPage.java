@@ -19,6 +19,7 @@ public class MainPage extends JFrame {
 
     String currentMediaType = "film";
     ArrayList<String> selectedGenreList = new ArrayList<String>();
+    String searchInput;
 
     MainPage(MediaRegistry registry){
         //Creating the frame for GUI elements to exist in
@@ -128,22 +129,18 @@ public class MainPage extends JFrame {
         movieButt.setBackground(bgColor);
         movieButt.setForeground(textColor);
         movieButt.setFocusable(false);
-        
 
         JButton serieButt = new JButton("Series");
         serieButt.setPreferredSize(new Dimension(75,50));
         serieButt.setBackground(new Color(50,50,50));
         serieButt.setForeground(textColor);
         serieButt.setFocusable(false);
-        
+
         JButton favoriteButt = new JButton("Favorites");
         favoriteButt.setPreferredSize(new Dimension(100,50));
         favoriteButt.setBackground(new Color(50,50,50));
         favoriteButt.setForeground(textColor);
         favoriteButt.setFocusable(false);
-        
-
-        
 
         //TOP CENTER BOTTOM
         String[] genres = {"Sort by", "Drama", "Romance", "Crime", "History", "Fantasy", "Family", "Adventure", "Mystery", "Thriller", "Horror", "Sci-fi", "Musical", "Comedy", "Biography", "War", "Action", "Western", "Film-Noir", "Talk-show", "Documentary", "Sport", "Animation"};
@@ -172,8 +169,17 @@ public class MainPage extends JFrame {
         genreBox.setBackground(bgColor);
         genreBox.setForeground(textColor);
 
+        //TOP RIGHT
+
+        JTextField searchBar = new JTextField();
+        searchBar.setColumns(20);
+
+        JButton searchButt = new JButton("Search");
+        topRight.add(searchButt);
+        topRight.add(searchBar);
+
         //actionlisteners
-        
+
         for(String g : genreList){
             selectedGenreList.add(g);
         }
@@ -201,13 +207,10 @@ public class MainPage extends JFrame {
                     alphaCheck.setSelected(false);
 
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
-                    System.out.println("Release on");
-                    System.out.println(selectedGenreList);
                 }else{
                     release=false;
 
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
-                    System.out.println("Release off");
                 }
             });
 
@@ -218,31 +221,28 @@ public class MainPage extends JFrame {
                     releaseCheck.setSelected(false);
 
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
-                    System.out.println("Alpha off");
-                    System.out.println(selectedGenreList);
                 }else{
                     alpha=false;
 
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
-                    System.out.println("Alpha on");
                 }
             });
-            
-            movieButt.addActionListener(e -> {
+
+        movieButt.addActionListener(e -> {
                 if(currentMediaType!="film"){
                     currentMediaType = "film";
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
                 }
             });
-            
-            serieButt.addActionListener(e -> {
+
+        serieButt.addActionListener(e -> {
                 if(currentMediaType!="series"){
                     currentMediaType = "series";
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
                 }
             });
-            
-            favoriteButt.addActionListener(e -> {
+
+        favoriteButt.addActionListener(e -> {
                 if(currentMediaType=="film"){
                     currentMediaType = "favorite film";
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
@@ -252,29 +252,35 @@ public class MainPage extends JFrame {
                 }
             });
 
+        searchBar.addActionListener(e -> {
+                searchInput = searchBar.getText();
+                if(searchInput.length()==0){
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                }else{
+                    searchAndFill(currentMediaType, searchInput, registry, scrollPanel, registry.sortMedia(currentMediaType, selectedGenreList, release, alpha));
+                }
+            });
 
+        searchButt.addActionListener(e -> {
+                searchInput = searchBar.getText();
+                if(searchInput.length()==0){
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                }else{
+                    searchAndFill(currentMediaType, searchInput, registry, scrollPanel, registry.sortMedia(currentMediaType, selectedGenreList, release, alpha));
+                }
+            });
+
+        //Finishing touches hoho
         topCenterTop.add(movieButt);
         topCenterTop.add(serieButt);
         topCenterTop.add(favoriteButt);
         topCenter.add(topCenterTop);
-            
-            
+
         topCenterBot.add(genreBox);
         topCenterBot.add(releaseCheck);
         topCenterBot.add(alphaCheck);
         topCenter.add(topCenterBot);
 
-        //TOP RIGHT
-
-        JTextField searchBar = new JTextField();
-        searchBar.setColumns(20);
-
-        JLabel searchText = new JLabel("Search");
-
-        topRight.add(searchText);
-        topRight.add(searchBar);
-
-        //Finishing touches hoho
         topPanel.add(topLeft);
         topPanel.add(topCenter);
         topPanel.add(topRight);
@@ -295,43 +301,44 @@ public class MainPage extends JFrame {
 
     private void sortAndFill(String type, ArrayList<String> selectedGenreList, boolean release, boolean alpha, MediaRegistry registry, JPanel panel){
         //if(!selectedGenreList.get(0).equals("Sort by")){
-            //ArrayList<String> selectedGenreList = new ArrayList<>();
-            //selectedGenreList.add(selectedGenre);
-            ArrayList<Media> sortedList = registry.sortMedia(type, selectedGenreList, release, alpha);
-
-            int rows = 0;
-            if(sortedList.size()%8 == 0){
-                rows = sortedList.size()/8;
-            }else if(sortedList.size()%8 != 0 && sortedList.size()/8 >= 3){
-                rows = (sortedList.size()/8)+1;
-            }else if(sortedList.size()%8 != 0 && sortedList.size()/8 < 3){
-                rows = (sortedList.size()/8)+2;
-            }
-
-            panel.setLayout(new GridLayout(rows,8));
-
-            fillDisplay(sortedList, panel, registry);
-        /*}else{
         //ArrayList<String> selectedGenreList = new ArrayList<>();
         //selectedGenreList.add(selectedGenre);
         ArrayList<Media> sortedList = registry.sortMedia(type, selectedGenreList, release, alpha);
 
         int rows = 0;
         if(sortedList.size()%8 == 0){
-        rows = sortedList.size()/8;
+            rows = sortedList.size()/8;
         }else if(sortedList.size()%8 != 0 && sortedList.size()/8 >= 3){
-        rows = (sortedList.size()/8)+1;
+            rows = (sortedList.size()/8)+1;
         }else if(sortedList.size()%8 != 0 && sortedList.size()/8 < 3){
-        rows = (sortedList.size()/8)+2;
+            rows = (sortedList.size()/8)+2;
         }
 
         panel.setLayout(new GridLayout(rows,8));
 
-        fillDisplay(sortedList, panel);
-        }*/
+        fillDisplay(sortedList, panel, registry);
+    }
+
+    private void searchAndFill(String type, String searchString, MediaRegistry registry, JPanel panel, ArrayList<Media> listToSort){
+
+        ArrayList<Media> sortedList = registry.searchMedia(type, searchString, listToSort);
+
+        int rows = 0;
+        if(sortedList.size()%8 == 0){
+            rows = sortedList.size()/8;
+        }else if(sortedList.size()%8 != 0 && sortedList.size()/8 >= 3){
+            rows = (sortedList.size()/8)+1;
+        }else if(sortedList.size()%8 != 0 && sortedList.size()/8 < 3){
+            rows = (sortedList.size()/8)+2;
+        }
+
+        panel.setLayout(new GridLayout(rows,8));
+
+        fillDisplay(sortedList, panel, registry);
     }
 
     private void fillDisplay(List<Media> displayList, JPanel displayPanel, MediaRegistry registry){
+
         clearDisplay(displayPanel);
         //System.out.println(displayPanel.getParent());
         for(Media m : displayList){
@@ -425,6 +432,7 @@ public class MainPage extends JFrame {
         JLabel nameLabel = new JLabel(media.name);
         nameLabel.setFont(new Font("Arial", Font.PLAIN, 28));
         nameLabel.setHorizontalAlignment(JLabel.CENTER);
+        nameLabel.setForeground(textColor);
 
         //create back button
         JButton backButt = new JButton("Back");
@@ -442,7 +450,7 @@ public class MainPage extends JFrame {
                 panel.setLayout(new GridLayout(14,8));
 
                 sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, panel);//maybe scroll
-                
+
                 //fillDisplay(currentList, panel);
 
                 //fillDisplay(currentList, panel);
@@ -464,12 +472,70 @@ public class MainPage extends JFrame {
         img.setBorderPainted(false);
 
         //add media details
-        JLabel details = new JLabel("Genre: " + media.genre, SwingConstants.LEFT);//continue here
-        JLabel details2 = new JLabel("Release year: " + media.startYear);
+        String seriesExtra = "";
+        int sizeDependant = 50;
+        JButton favButt = new JButton("");
+        boolean in = false;
+        if(media instanceof Series){
+            Series s = (Series) media;
+            seriesExtra = "End year: " + s.endYear + "<br/>" +
+            "Seasons: " + s.seasonsEp.size() + "<br/>" +
+            "Episodes: " + s.seasonsEp.get(0);
+            sizeDependant = 100;
+
+            seriesloop:
+            
+            for(Media m : registry.getFavSeries()){
+                if(m.name.equals(media.name)){
+                    favButt.setText("Remove from favorites");
+                    media.fav=true;
+                    in = true;
+                }
+            }
+            if(!in){
+                    favButt.setText("Add to favorites");
+                    media.fav=false;
+                }
+        }else if(media instanceof Film){
+            for(Media m : registry.getFavFilm()){
+                if(m.name.equals(media.name)){
+                    favButt.setText("Remove from favorites");
+                    media.fav=true;
+                    in = true;
+                }
+            }
+            if(!in){
+                    favButt.setText("Add to favorites");
+                    media.fav=false;
+                }
+        }
+        
+        favButt.addActionListener( e -> {
+            if(!media.fav){
+                favButt.setText("Remove from favorites");
+                registry.addFavorite(media);
+                media.fav=true;
+            }else{
+                favButt.setText("Add to favorites");
+                registry.removeFavorite(media);
+                media.fav=false;
+                System.out.println(currentMediaType);
+            }
+        });
+
+        JLabel details = new JLabel("<html> Rating: " + media.rating + "<br/>" +
+                "Genre: " + media.genre + "<br/>" +
+                "Release year: " + media.startYear + "<br/>" +
+                seriesExtra);
+        details.setPreferredSize(new Dimension(screenWidth-700, sizeDependant));
+        details.setAlignmentX(0.0f);
+        details.setHorizontalAlignment(SwingConstants.LEFT);
         details.setForeground(textColor);
-        details2.setPreferredSize(new Dimension(500, 15));
-        details2.setAlignmentX(0.0f);
-        details2.setHorizontalAlignment(SwingConstants.LEFT);
+
+        favButt.setAlignmentX(1.0f);
+        favButt.setHorizontalAlignment(SwingConstants.RIGHT);
+        favButt.setForeground(textColor);
+        favButt.setBackground(bgColor);
 
         //add to panels
         top.add(flowPanel);
@@ -478,7 +544,7 @@ public class MainPage extends JFrame {
 
         center.add(img);
         bot.add(details);
-        bot.add(details2);
+        bot.add(favButt);
 
         //add to origin panel
         panel.add(top,BorderLayout.NORTH);

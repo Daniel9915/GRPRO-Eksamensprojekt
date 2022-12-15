@@ -8,6 +8,7 @@ public abstract class Media{
     public double rating;
     public String imgPath;
     public String raw;
+    public boolean fav;
     
     public Media(String name, int startYear, HashSet<String> genre, double rating, String imgPath, String raw){
         this.name = name;
@@ -16,6 +17,7 @@ public abstract class Media{
         this.rating = rating;
         this.imgPath = imgPath;
         this.raw = raw;
+
     }
     
 }

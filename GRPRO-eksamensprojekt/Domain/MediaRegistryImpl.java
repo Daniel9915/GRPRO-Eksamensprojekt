@@ -201,11 +201,12 @@ public class MediaRegistryImpl implements MediaRegistry{
         return finalList;
     }
 
-    public ArrayList<Media> searchMedia(String sortingType, String searchString){
+    public ArrayList<Media> searchMedia(String sortingType, String searchString, ArrayList<Media> listToSort){
         if(sortingType != "film" && sortingType != "series" && sortingType != "favorite film" && sortingType != "favorite series"){
             throw new NotASortingTypeException(sortingType);
         }
-        ArrayList<Media> typeSortedList = getSortingType(sortingType);
+        //ArrayList<Media> typeSortedList = getSortingType(sortingType);
+        ArrayList<Media> typeSortedList = listToSort;
         ArrayList<Media> finalList = new ArrayList<>();
         mediaLoop:
         for(Media m: typeSortedList){
@@ -307,8 +308,8 @@ public class MediaRegistryImpl implements MediaRegistry{
         if (media instanceof Film){
             for(Film f : favFilmList){
                 if (f.name.equals(media.name)){//need change
-                    return;
-                    //throw new AlreadyInFavoritesException(media);//idk man
+                    //return;
+                    throw new AlreadyInFavoritesException(media);//idk man
                 }
             }
             Film film = (Film) media;
@@ -317,8 +318,8 @@ public class MediaRegistryImpl implements MediaRegistry{
         }else if (media instanceof Series){
             for(Series s : favSeriesList){
                 if (s.name.equals(media.name)){
-                    return;
-                    //throw new AlreadyInFavoritesException(media);
+                    //return;
+                    throw new AlreadyInFavoritesException(media);
                 }
             }
             Series series = (Series) media;
