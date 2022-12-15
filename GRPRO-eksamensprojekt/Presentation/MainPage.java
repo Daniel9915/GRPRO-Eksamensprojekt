@@ -16,7 +16,6 @@ public class MainPage extends JFrame {
     Color bgColor = new Color(50,50,50);
     boolean release = false;
     boolean alpha = false;
-    boolean rating = true;
 
     String currentMediaType = "film";
     ArrayList<String> selectedGenreList = new ArrayList<String>();
@@ -154,12 +153,6 @@ public class MainPage extends JFrame {
         alphaCheck.setBackground(bgColor);
         alphaCheck.setForeground(textColor);
         
-        JCheckBox ratingCheck = new JCheckBox("Rating");
-        ratingCheck.setFocusable(false);
-        ratingCheck.setSelected(rating);        
-        ratingCheck.setBackground(bgColor);
-        ratingCheck.setForeground(textColor);
-
         //combobox
         JComboBox genreBox = new JComboBox(genres);
         genreBox.setFocusable(false);
@@ -209,13 +202,9 @@ public class MainPage extends JFrame {
         releaseCheck.addActionListener(e -> {
                 if(releaseCheck.isSelected()){
                     alpha=false;
-                    rating=false;
                     release=true;
                     
                     alphaCheck.setSelected(false);
-                    ratingCheck.setSelected(false);
-                    
-                    System.out.println("release true");
 
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
                 }else{
@@ -229,35 +218,12 @@ public class MainPage extends JFrame {
                 if(alphaCheck.isSelected()){
                     alpha=true;
                     release=false;
-                    rating=false;
                     
                     releaseCheck.setSelected(false);
-                    ratingCheck.setSelected(false);
-                    
-                    System.out.println("alpha true");
 
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
                 }else{
                     alpha=false;
-
-                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
-                }
-            });
-            
-            ratingCheck.addActionListener(e -> {
-                if(ratingCheck.isSelected()){
-                    alpha=false;
-                    release=false;
-                    rating=true;
-                    
-                    releaseCheck.setSelected(false);
-                    alphaCheck.setSelected(false);
-                    
-                    System.out.println("rating true");
-
-                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
-                }else{
-                    rating=false;
 
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
                 }
@@ -315,7 +281,6 @@ public class MainPage extends JFrame {
         topCenterBot.add(genreBox);
         topCenterBot.add(releaseCheck);
         topCenterBot.add(alphaCheck);
-        topCenterBot.add(ratingCheck);
         topCenter.add(topCenterBot);
 
         topPanel.add(topLeft);
