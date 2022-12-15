@@ -26,7 +26,7 @@ public class MainPage extends JFrame {
         JFrame frame = new JFrame();
 
         //Cosmetics
-        frame.setTitle("Netflix 2.0");
+        frame.setTitle("Cring Media");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ImageIcon image = new ImageIcon("something.png");
         frame.setIconImage(image.getImage());
