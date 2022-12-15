@@ -9,17 +9,17 @@ import Data.*;
 public class MediaRegistryImpl implements MediaRegistry{
     DataAccess data;
 
-    protected List<String> filmData;
-    protected List<Film> filmList = new ArrayList<Film>();
+    private List<String> filmData;
+    private List<Film> filmList = new ArrayList<Film>();
 
-    protected List<String> favFilmData;
-    protected List<Film> favFilmList = new ArrayList<Film>();
+    private List<String> favFilmData;
+    private List<Film> favFilmList = new ArrayList<Film>();
 
-    protected List<String> seriesData;
-    protected List<Series> seriesList = new ArrayList<Series>();
+    private List<String> seriesData;
+    private List<Series> seriesList = new ArrayList<Series>();
 
-    protected List<String> favSeriesData;
-    protected List<Series> favSeriesList = new ArrayList<Series>();
+    private List<String> favSeriesData;
+    private List<Series> favSeriesList = new ArrayList<Series>();
 
     public MediaRegistryImpl(){
         data = new DataAccessImpl();

@@ -7,7 +7,6 @@ public interface MediaRegistry{
    void addFavorite(Media media);
    void removeFavorite(Media media);
    
-   // hvis "ArrayList<String> genre" er tom, så er det alle genres
    ArrayList<Media> sortMedia(String sortingType, ArrayList<String> genre, boolean releaseDate, boolean alphabetically); 
    ArrayList<Media> searchMedia(String sortingType, String searchString, ArrayList<Media> listToSort);
    ArrayList<Media> getFilm();

@@ -1,6 +1,6 @@
 package Presentation;
 
-import Domain.*;//idk where but need
+import Domain.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainPage extends JFrame {
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    int screenWidth = screenSize.width;
-    int screenHeight = screenSize.height;
-    Color textColor = Color.WHITE;
-    Color bgColor = new Color(50,50,50);
-    boolean release = false;
-    boolean alpha = false;
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private int screenWidth = screenSize.width;
+    private int screenHeight = screenSize.height;
+    private Color textColor = Color.WHITE;
+    private Color bgColor = new Color(50,50,50);
+    private boolean release = false;
+    private boolean alpha = false;
 
     String currentMediaType = "film";
     ArrayList<String> selectedGenreList = new ArrayList<String>();
@@ -327,17 +327,18 @@ public class MainPage extends JFrame {
     }
 
     private void fillDisplay(List<Media> displayList, JPanel displayPanel, MediaRegistry registry){
-
+                
         clearDisplay(displayPanel);
         for(Media m : displayList){
             JPanel display = new JPanel();
             display.setBackground(bgColor);
-            display.setLayout(new BorderLayout());//to put text under img
+            display.setLayout(new BorderLayout());
             ImageIcon imgIcon = new ImageIcon("notfound");
+            String tempImgPath = m.getImgPath();
             if(m instanceof Film){
-                imgIcon = new ImageIcon("MovieData"+File.separator+"filmplakater"+File.separator+m.imgPath);    
+                imgIcon = new ImageIcon("MovieData"+File.separator+"filmplakater"+File.separator+ m.getImgPath());    
             }else{
-                imgIcon = new ImageIcon("MovieData"+File.separator+"serieforsider"+File.separator+m.imgPath);    
+                imgIcon = new ImageIcon("MovieData"+File.separator+"serieforsider"+File.separator+ m.getImgPath());    
             }
 
             JButton img = new JButton(imgIcon);
@@ -354,7 +355,7 @@ public class MainPage extends JFrame {
 
             display.add(img, BorderLayout.NORTH);
 
-            JLabel text = new JLabel(m.name);
+            JLabel text = new JLabel(m.getName());
             text.setForeground(textColor);
             text.setPreferredSize(new Dimension(10, 15));
             text.setHorizontalAlignment(JLabel.CENTER);
@@ -392,7 +393,7 @@ public class MainPage extends JFrame {
 
         top.setLayout(new GridLayout(1, 3));
         //create name label
-        JLabel nameLabel = new JLabel(media.name);
+        JLabel nameLabel = new JLabel(media.getName());
         nameLabel.setFont(new Font("Arial", Font.PLAIN, 28));
         nameLabel.setHorizontalAlignment(JLabel.CENTER);
         nameLabel.setForeground(textColor);
@@ -439,53 +440,53 @@ public class MainPage extends JFrame {
         boolean in = false;
         if(media instanceof Series){
             Series s = (Series) media;
-            seriesExtra = "End year: " + s.endYear + "<br/>" +
-            "Seasons: " + s.seasonsEp.size() + "<br/>" +
-            "Episodes: " + s.seasonsEp.get(0);
+            seriesExtra = "End year: " + s.getEndYear() + "<br/>" +
+            "Seasons: " + s.getSeasonsEp().size() + "<br/>" +
+            "Episodes: " + s.getSeasonsEp().get(0);
             sizeDependant = 100;
 
             seriesloop:
 
             for(Media m : registry.getFavSeries()){
-                if(m.name.equals(media.name)){
+                if(m.getName().equals(media.getName())){
                     favButt.setText("Remove from favorites");
-                    media.fav=true;
+                    media.changeFav(true);
                     in = true;
                 }
             }
             if(!in){
                 favButt.setText("Add to favorites");
-                media.fav=false;
+                media.changeFav(false);
             }
         }else if(media instanceof Film){
             for(Media m : registry.getFavFilm()){
-                if(m.name.equals(media.name)){
+                if(m.getName().equals(media.getName())){
                     favButt.setText("Remove from favorites");
-                    media.fav=true;
+                    media.changeFav(true);
                     in = true;
                 }
             }
             if(!in){
                 favButt.setText("Add to favorites");
-                media.fav=false;
+                media.changeFav(false);
             }
         }
 
         favButt.addActionListener( e -> {
-                if(!media.fav){
+                if(!media.getFav()){
                     favButt.setText("Remove from favorites");
                     registry.addFavorite(media);
-                    media.fav=true;
+                    media.changeFav(true);
                 }else{
                     favButt.setText("Add to favorites");
                     registry.removeFavorite(media);
-                    media.fav=false;
+                    media.changeFav(false);
                 }
             });
 
-        JLabel details = new JLabel("<html> Rating: " + media.rating + "<br/>" +
-                "Genre: " + media.genre + "<br/>" +
-                "Release year: " + media.startYear + "<br/>" +
+        JLabel details = new JLabel("<html> Rating: " + media.getRating() + "<br/>" +
+                "Genre: " + media.getGenre() + "<br/>" +
+                "Release year: " + media.getStartYear() + "<br/>" +
                 seriesExtra);
         details.setPreferredSize(new Dimension(screenWidth-700, sizeDependant));
         details.setAlignmentX(0.0f);
