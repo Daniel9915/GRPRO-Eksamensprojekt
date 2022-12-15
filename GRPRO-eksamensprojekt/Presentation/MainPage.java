@@ -16,6 +16,7 @@ public class MainPage extends JFrame {
     Color bgColor = new Color(50,50,50);
     boolean release = false;
     boolean alpha = false;
+    boolean rating = true;
 
     String currentMediaType = "film";
     ArrayList<String> selectedGenreList = new ArrayList<String>();
@@ -120,11 +121,17 @@ public class MainPage extends JFrame {
         serieButt.setForeground(textColor);
         serieButt.setFocusable(false);
 
-        JButton favoriteButt = new JButton("Favorites");
-        favoriteButt.setPreferredSize(new Dimension(100,50));
-        favoriteButt.setBackground(new Color(50,50,50));
-        favoriteButt.setForeground(textColor);
-        favoriteButt.setFocusable(false);
+        JButton favoriteFilmButt = new JButton("Favorite movies");
+        favoriteFilmButt.setPreferredSize(new Dimension(125,50));
+        favoriteFilmButt.setBackground(new Color(50,50,50));
+        favoriteFilmButt.setForeground(textColor);
+        favoriteFilmButt.setFocusable(false);
+
+        JButton favoriteSeriesButt = new JButton("Favorite series");
+        favoriteSeriesButt.setPreferredSize(new Dimension(125,50));
+        favoriteSeriesButt.setBackground(new Color(50,50,50));
+        favoriteSeriesButt.setForeground(textColor);
+        favoriteSeriesButt.setFocusable(false);
 
         //TOP CENTER BOTTOM
         String[] genres = {"Sort by", "Drama", "Romance", "Crime", "History", "Fantasy", "Family", "Adventure", "Mystery", "Thriller", "Horror", "Sci-fi", "Musical", "Comedy", "Biography", "War", "Action", "Western", "Film-Noir", "Talk-show", "Documentary", "Sport", "Animation"};
@@ -146,6 +153,12 @@ public class MainPage extends JFrame {
         alphaCheck.setSelected(alpha);        
         alphaCheck.setBackground(bgColor);
         alphaCheck.setForeground(textColor);
+        
+        JCheckBox ratingCheck = new JCheckBox("Rating");
+        ratingCheck.setFocusable(false);
+        ratingCheck.setSelected(rating);        
+        ratingCheck.setBackground(bgColor);
+        ratingCheck.setForeground(textColor);
 
         //combobox
         JComboBox genreBox = new JComboBox(genres);
@@ -157,16 +170,16 @@ public class MainPage extends JFrame {
 
         JTextField searchBar = new JTextField();
         searchBar.setColumns(20);
-    
+
         JLabel emp = new JLabel("");
         emp.setPreferredSize(new Dimension(100,100));
-        
+
         JButton searchButt = new JButton("Search");
         searchButt.setFocusable(false);
         searchButt.setBackground(bgColor);
         searchButt.setForeground(textColor);
         searchButt.setVerticalAlignment(JLabel.CENTER);
-        
+
         topRight.add(emp);
         topRight.add(searchButt);
         topRight.add(searchBar);
@@ -196,8 +209,13 @@ public class MainPage extends JFrame {
         releaseCheck.addActionListener(e -> {
                 if(releaseCheck.isSelected()){
                     alpha=false;
+                    rating=false;
                     release=true;
+                    
                     alphaCheck.setSelected(false);
+                    ratingCheck.setSelected(false);
+                    
+                    System.out.println("release true");
 
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
                 }else{
@@ -211,11 +229,35 @@ public class MainPage extends JFrame {
                 if(alphaCheck.isSelected()){
                     alpha=true;
                     release=false;
+                    rating=false;
+                    
                     releaseCheck.setSelected(false);
+                    ratingCheck.setSelected(false);
+                    
+                    System.out.println("alpha true");
 
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
                 }else{
                     alpha=false;
+
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                }
+            });
+            
+            ratingCheck.addActionListener(e -> {
+                if(ratingCheck.isSelected()){
+                    alpha=false;
+                    release=false;
+                    rating=true;
+                    
+                    releaseCheck.setSelected(false);
+                    alphaCheck.setSelected(false);
+                    
+                    System.out.println("rating true");
+
+                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+                }else{
+                    rating=false;
 
                     sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
                 }
@@ -235,14 +277,14 @@ public class MainPage extends JFrame {
                 }
             });
 
-        favoriteButt.addActionListener(e -> {
-                if(currentMediaType=="film"){
-                    currentMediaType = "favorite film";
-                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
-                }else if(currentMediaType=="series"){
-                    currentMediaType = "favorite series";
-                    sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
-                }
+        favoriteFilmButt.addActionListener(e -> {
+                currentMediaType = "favorite film";
+                sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
+            });
+
+        favoriteSeriesButt.addActionListener(e -> {
+                currentMediaType = "favorite series";
+                sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, scrollPanel);
             });
 
         searchBar.addActionListener(e -> {
@@ -266,12 +308,14 @@ public class MainPage extends JFrame {
         //Finishing touches hoho
         topCenterTop.add(movieButt);
         topCenterTop.add(serieButt);
-        topCenterTop.add(favoriteButt);
+        topCenterTop.add(favoriteFilmButt);
+        topCenterTop.add(favoriteSeriesButt);
         topCenter.add(topCenterTop);
 
         topCenterBot.add(genreBox);
         topCenterBot.add(releaseCheck);
         topCenterBot.add(alphaCheck);
+        topCenterBot.add(ratingCheck);
         topCenter.add(topCenterBot);
 
         topPanel.add(topLeft);
@@ -393,8 +437,8 @@ public class MainPage extends JFrame {
         backButt.setFont(new Font("Arial", Font.PLAIN, 28));
         backButt.setPreferredSize(new Dimension(100,40));
         backButt.setHorizontalAlignment(JLabel.LEFT);
-        backButt.setBackground(new Color(50,50,50));
-        backButt.setForeground(Color.red);
+        backButt.setBackground(bgColor);
+        backButt.setForeground(textColor);
         backButt.setFocusable(false);
 
         backButt.addActionListener(e -> {
@@ -416,12 +460,12 @@ public class MainPage extends JFrame {
         img.setContentAreaFilled(false);
         img.setBorderPainted(false);
         img.setFocusable(false);
-        
+
         img.addActionListener( e -> {
-            //imgIcon = new ImageIcon("MovieData"+File.separator+"netflixDisplay14Loading.png");
-            ImageIcon newImgIcon = new ImageIcon("MovieData"+File.separator+"netflixDisplay14Loading.png");
-            img.setIcon(newImgIcon);
-        });
+                //imgIcon = new ImageIcon("MovieData"+File.separator+"netflixDisplay14Loading.png");
+                ImageIcon newImgIcon = new ImageIcon("MovieData"+File.separator+"netflixDisplay14Loading.png");
+                img.setIcon(newImgIcon);
+            });
 
         //add media details
         String seriesExtra = "";
