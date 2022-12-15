@@ -8,7 +8,7 @@ public interface MediaRegistry{
    void removeFavorite(Media media);
    
    ArrayList<Media> sortMedia(String sortingType, ArrayList<String> genre, boolean releaseDate, boolean alphabetically); 
-   ArrayList<Media> searchMedia(String sortingType, String searchString, ArrayList<Media> listToSort);
+   ArrayList<Media> searchMedia(String searchString, ArrayList<Media> listToSort);
    ArrayList<Media> getFilm();
    ArrayList<Media> getSeries();
    ArrayList<Media> getFavFilm();

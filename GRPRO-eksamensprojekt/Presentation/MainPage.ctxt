@@ -1,15 +1,15 @@
 #BlueJ class context
 comment0.target=MainPage
 comment1.params=registry
-comment1.target=MainPage(MediaRegistry)
+comment1.target=MainPage(Domain.MediaRegistry)
 comment2.params=type\ selectedGenreList\ release\ alpha\ registry\ panel
-comment2.target=void\ sortAndFill(java.lang.String,\ java.util.ArrayList,\ boolean,\ boolean,\ MediaRegistry,\ javax.swing.JPanel)
+comment2.target=void\ sortAndFill(java.lang.String,\ java.util.ArrayList,\ boolean,\ boolean,\ Domain.MediaRegistry,\ javax.swing.JPanel)
 comment3.params=type\ searchString\ registry\ panel\ listToSort
-comment3.target=void\ searchAndFill(java.lang.String,\ java.lang.String,\ MediaRegistry,\ javax.swing.JPanel,\ java.util.ArrayList)
+comment3.target=void\ searchAndFill(java.lang.String,\ java.lang.String,\ Domain.MediaRegistry,\ javax.swing.JPanel,\ java.util.ArrayList)
 comment4.params=displayList\ displayPanel\ registry
-comment4.target=void\ fillDisplay(java.util.List,\ javax.swing.JPanel,\ MediaRegistry)
+comment4.target=void\ fillDisplay(java.util.List,\ javax.swing.JPanel,\ Domain.MediaRegistry)
 comment5.params=media\ panel\ currentList\ registry
-comment5.target=void\ makeMediaEntry(Domain.Media,\ javax.swing.JPanel,\ java.util.List,\ MediaRegistry)
+comment5.target=void\ makeMediaEntry(Domain.Media,\ javax.swing.JPanel,\ java.util.List,\ Domain.MediaRegistry)
 comment6.params=display
 comment6.target=void\ clearDisplay(javax.swing.JPanel)
 numComments=7

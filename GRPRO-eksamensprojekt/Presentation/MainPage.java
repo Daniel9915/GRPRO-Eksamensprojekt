@@ -310,7 +310,7 @@ public class MainPage extends JFrame {
 
     private void searchAndFill(String type, String searchString, MediaRegistry registry, JPanel panel, ArrayList<Media> listToSort){
 
-        ArrayList<Media> sortedList = registry.searchMedia(type, searchString, listToSort);
+        ArrayList<Media> sortedList = registry.searchMedia(searchString, listToSort);
 
         int rows = 0;
         if(sortedList.size()%8 == 0){

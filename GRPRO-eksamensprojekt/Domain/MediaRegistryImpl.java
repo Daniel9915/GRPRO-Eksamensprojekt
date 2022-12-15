@@ -201,10 +201,10 @@ public class MediaRegistryImpl implements MediaRegistry{
         return finalList;
     }
 
-    public ArrayList<Media> searchMedia(String sortingType, String searchString, ArrayList<Media> listToSort){
-        if(sortingType != "film" && sortingType != "series" && sortingType != "favorite film" && sortingType != "favorite series"){
+    public ArrayList<Media> searchMedia(String searchString, ArrayList<Media> listToSort){
+        /*if(sortingType != "film" && sortingType != "series" && sortingType != "favorite film" && sortingType != "favorite series"){
             throw new NotASortingTypeException(sortingType);
-        }
+        }*/
         //ArrayList<Media> typeSortedList = getSortingType(sortingType);
         ArrayList<Media> typeSortedList = listToSort;
         ArrayList<Media> finalList = new ArrayList<>();
