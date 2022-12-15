@@ -2,3 +2,4 @@ Raging Bull; 1980; Biography, Drama, Sport; 8,2;
 The Godfather part II; 1974; Crime, Drama; 9;
 Star Wars; 1977; Action, Adventure, Family; 8,6;
 Vertigo; 1958; Mystery, Romance, Thriller; 8,3;
+Casablanca; 1942; Drama, Romance, War; 8,5;

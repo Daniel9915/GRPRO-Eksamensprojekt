@@ -64,10 +64,6 @@ public class MainPage extends JFrame {
         frame.add(rightPanel,BorderLayout.EAST);
 
         //CENTER
-
-        //clearDisplay(panel);
-        //panel.getParent().removeAll();
-
         JPanel scrollPanel = new JPanel();
         scrollPanel.setBackground(bgColor);
         scrollPanel.setLayout(new GridLayout(14,8));//might cause problem but hey
@@ -80,18 +76,6 @@ public class MainPage extends JFrame {
 
         centerPanel.add(scrollPane);
         fillDisplay(registry.getFilm(), scrollPanel, registry);
-
-        //
-
-        //JPanel scrollPanel = createScrollPanel(centerPanel);
-
-        //JPanel scrollPanelStep = new JPanel();
-        //scrollPanelStep.setLayout(new GridLayout(14,8));
-        //scrollPanelStep.setPreferredSize(new Dimension(screenWidth-400, screenHeight));
-
-        //fillDisplay(registry.getFilm(), scrollPanel);
-
-        //scrollPanel.add(scrollPanelStep);
 
         //TOPPANELS
         JPanel topLeft = new JPanel();
@@ -107,7 +91,7 @@ public class MainPage extends JFrame {
         //TOP LEFT
         topLeft.setLayout(new FlowLayout(FlowLayout.CENTER, 10,40));
         JLabel logoLabel = new JLabel("");
-        ImageIcon logo = new ImageIcon("NETFLIX.png");
+        ImageIcon logo = new ImageIcon("MovieData"+File.separator+"cringmedia.png");
         logoLabel.setIcon(logo);
         topLeft.add(logoLabel);
 
@@ -173,8 +157,17 @@ public class MainPage extends JFrame {
 
         JTextField searchBar = new JTextField();
         searchBar.setColumns(20);
-
+    
+        JLabel emp = new JLabel("");
+        emp.setPreferredSize(new Dimension(100,100));
+        
         JButton searchButt = new JButton("Search");
+        searchButt.setFocusable(false);
+        searchButt.setBackground(bgColor);
+        searchButt.setForeground(textColor);
+        searchButt.setVerticalAlignment(JLabel.CENTER);
+        
+        topRight.add(emp);
         topRight.add(searchButt);
         topRight.add(searchBar);
 
@@ -285,24 +278,11 @@ public class MainPage extends JFrame {
         topPanel.add(topCenter);
         topPanel.add(topRight);
 
-        //Center
-        //JPanel test = new JPanel();
-        //centerPanel.add(test);
-
         frame.pack();
         frame.setVisible(true);
-
-        //Combo box/drop down list used for sorting media
-        //String[][] movies = {}
-        //JComboBox comboBox = new JComboBox();
-
-        //JButtons used to display all the media
     }
 
     private void sortAndFill(String type, ArrayList<String> selectedGenreList, boolean release, boolean alpha, MediaRegistry registry, JPanel panel){
-        //if(!selectedGenreList.get(0).equals("Sort by")){
-        //ArrayList<String> selectedGenreList = new ArrayList<>();
-        //selectedGenreList.add(selectedGenre);
         ArrayList<Media> sortedList = registry.sortMedia(type, selectedGenreList, release, alpha);
 
         int rows = 0;
@@ -340,7 +320,6 @@ public class MainPage extends JFrame {
     private void fillDisplay(List<Media> displayList, JPanel displayPanel, MediaRegistry registry){
 
         clearDisplay(displayPanel);
-        //System.out.println(displayPanel.getParent());
         for(Media m : displayList){
             JPanel display = new JPanel();
             display.setBackground(bgColor);
@@ -362,8 +341,6 @@ public class MainPage extends JFrame {
                     displayPanel.setLayout(new BorderLayout());
 
                     makeMediaEntry(m, displayPanel, displayList, registry);
-                    //fillDisplay(displayList, displayPanel);
-                    //fillDisplay(new ArrayList<Media>(){{add(displayList.get(1)); add(displayList.get(0));}},displayPanel);
                 });
 
             display.add(img, BorderLayout.NORTH);
@@ -380,12 +357,8 @@ public class MainPage extends JFrame {
 
         }
         if(displayList.size()%8 != 0){
-            //System.out.println("total size: " + displayList.size());
-            //System.out.println("size % 8 = " + displayList.size()%8);
             for(int i = 0; i < 8-(displayList.size()%8); i++){
                 displayPanel.add(new JLabel(""));
-                //System.out.println(i+1 + ". label");
-
             }
         }
         if(displayList.size()/8 < 3){
@@ -394,25 +367,6 @@ public class MainPage extends JFrame {
             }
         }
     }
-
-    /*private JPanel createScrollPanel(JPanel panel){
-    //clearDisplay(panel);
-    //panel.getParent().removeAll();
-
-    JPanel scrollPanel = new JPanel();
-    scrollPanel.setBackground(bgColor);
-    scrollPanel.setLayout(new GridLayout(14,8));//might cause problem but hey
-
-    JScrollPane scrollPane = new JScrollPane(scrollPanel);
-    scrollPane.setPreferredSize(new Dimension(screenWidth-400, screenHeight-200));
-    scrollPane.getVerticalScrollBar().setUnitIncrement(20);
-    scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-    scrollPane.setBorder(null);
-
-    panel.add(scrollPane);
-
-    return scrollPanel;
-    }*/
 
     private void makeMediaEntry(Media media, JPanel panel, List<Media> currentList, MediaRegistry registry){//might need scroll
         JPanel top = new JPanel();
@@ -444,18 +398,9 @@ public class MainPage extends JFrame {
         backButt.setFocusable(false);
 
         backButt.addActionListener(e -> {
-                //clearDisplay(panel);
-
-                //JPanel scrollPanel = createScrollPanel(panel);//old
                 panel.setLayout(new GridLayout(14,8));
 
                 sortAndFill(currentMediaType, selectedGenreList, release, alpha, registry, panel);//maybe scroll
-
-                //fillDisplay(currentList, panel);
-
-                //fillDisplay(currentList, panel);
-                //clearDisplay(panel);
-                //fillDisplay(startSelection, panel);
             });
 
         //create flowpanel for aligning button
@@ -470,6 +415,13 @@ public class MainPage extends JFrame {
         img.setHorizontalAlignment(JLabel.CENTER);
         img.setContentAreaFilled(false);
         img.setBorderPainted(false);
+        img.setFocusable(false);
+        
+        img.addActionListener( e -> {
+            //imgIcon = new ImageIcon("MovieData"+File.separator+"netflixDisplay14Loading.png");
+            ImageIcon newImgIcon = new ImageIcon("MovieData"+File.separator+"netflixDisplay14Loading.png");
+            img.setIcon(newImgIcon);
+        });
 
         //add media details
         String seriesExtra = "";
@@ -484,7 +436,7 @@ public class MainPage extends JFrame {
             sizeDependant = 100;
 
             seriesloop:
-            
+
             for(Media m : registry.getFavSeries()){
                 if(m.name.equals(media.name)){
                     favButt.setText("Remove from favorites");
@@ -493,9 +445,9 @@ public class MainPage extends JFrame {
                 }
             }
             if(!in){
-                    favButt.setText("Add to favorites");
-                    media.fav=false;
-                }
+                favButt.setText("Add to favorites");
+                media.fav=false;
+            }
         }else if(media instanceof Film){
             for(Media m : registry.getFavFilm()){
                 if(m.name.equals(media.name)){
@@ -505,23 +457,22 @@ public class MainPage extends JFrame {
                 }
             }
             if(!in){
+                favButt.setText("Add to favorites");
+                media.fav=false;
+            }
+        }
+
+        favButt.addActionListener( e -> {
+                if(!media.fav){
+                    favButt.setText("Remove from favorites");
+                    registry.addFavorite(media);
+                    media.fav=true;
+                }else{
                     favButt.setText("Add to favorites");
+                    registry.removeFavorite(media);
                     media.fav=false;
                 }
-        }
-        
-        favButt.addActionListener( e -> {
-            if(!media.fav){
-                favButt.setText("Remove from favorites");
-                registry.addFavorite(media);
-                media.fav=true;
-            }else{
-                favButt.setText("Add to favorites");
-                registry.removeFavorite(media);
-                media.fav=false;
-                System.out.println(currentMediaType);
-            }
-        });
+            });
 
         JLabel details = new JLabel("<html> Rating: " + media.rating + "<br/>" +
                 "Genre: " + media.genre + "<br/>" +
@@ -536,6 +487,7 @@ public class MainPage extends JFrame {
         favButt.setHorizontalAlignment(SwingConstants.RIGHT);
         favButt.setForeground(textColor);
         favButt.setBackground(bgColor);
+        favButt.setFocusable(false);
 
         //add to panels
         top.add(flowPanel);

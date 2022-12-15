@@ -10,7 +10,6 @@ comment4.params=displayList\ displayPanel\ registry
 comment4.target=void\ fillDisplay(java.util.List,\ javax.swing.JPanel,\ Domain.MediaRegistry)
 comment5.params=media\ panel\ currentList\ registry
 comment5.target=void\ makeMediaEntry(Domain.Media,\ javax.swing.JPanel,\ java.util.List,\ Domain.MediaRegistry)
-comment5.text=private\ JPanel\ createScrollPanel(JPanel\ panel){\r\n\ \ \ \ //clearDisplay(panel);\r\n\ \ \ \ //panel.getParent().removeAll();\r\n\r\n\ \ \ \ JPanel\ scrollPanel\ \=\ new\ JPanel();\r\n\ \ \ \ scrollPanel.setBackground(bgColor);\r\n\ \ \ \ scrollPanel.setLayout(new\ GridLayout(14,8));//might\ cause\ problem\ but\ hey\r\n\r\n\ \ \ \ JScrollPane\ scrollPane\ \=\ new\ JScrollPane(scrollPanel);\r\n\ \ \ \ scrollPane.setPreferredSize(new\ Dimension(screenWidth-400,\ screenHeight-200));\r\n\ \ \ \ scrollPane.getVerticalScrollBar().setUnitIncrement(20);\r\n\ \ \ \ scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);\r\n\ \ \ \ scrollPane.setBorder(null);\r\n\r\n\ \ \ \ panel.add(scrollPane);\r\n\r\n\ \ \ \ return\ scrollPanel;\r\n}
 comment6.params=display
 comment6.target=void\ clearDisplay(javax.swing.JPanel)
 numComments=7
